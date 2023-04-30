@@ -9,6 +9,7 @@ using ftrip.io.framework.Persistence.Sql.Mariadb;
 using ftrip.io.framework.Swagger;
 using ftrip.io.framework.Validation;
 using ftrip.io.framework.HealthCheck;
+using ftrip.io.framework.Secrets;
 using ftrip.io.catalog_service.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace ftrip.io.catalog_service
                 new AutoMapperInstaller<Startup>(services),
                 new FluentValidationInstaller<Startup>(services),
                 new GlobalizationInstaller<Startup>(services),
+                new EnviromentSecretsManagerInstaller(services),
                 new JwtAuthenticationInstaller(services),
                 new MariadbInstaller<DatabaseContext>(services),
                 new MariadbHealthCheckInstaller(services),
