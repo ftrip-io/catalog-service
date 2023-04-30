@@ -8,6 +8,7 @@ using ftrip.io.framework.messaging.Installers;
 using ftrip.io.framework.Persistence.Sql.Mariadb;
 using ftrip.io.framework.Swagger;
 using ftrip.io.framework.Validation;
+using ftrip.io.framework.HealthCheck;
 using ftrip.io.catalog_service.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace ftrip.io.catalog_service
                 new GlobalizationInstaller<Startup>(services),
                 new JwtAuthenticationInstaller(services),
                 new MariadbInstaller<DatabaseContext>(services),
+                new MariadbHealthCheckInstaller(services),
                 new CQRSInstaller<Startup>(services),
                 new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer)
             ).Install();
@@ -65,6 +67,8 @@ namespace ftrip.io.catalog_service
             });
 
             app.UseFtripioSwagger(Configuration.GetSection(nameof(SwaggerUISettings)).Get<SwaggerUISettings>());
+            app.UseFtripioHealthCheckUI(Configuration.GetSection(nameof(HealthCheckUISettings)).Get<HealthCheckUISettings>());
+
         }
     }
 }
