@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ftrip.io.catalog-service", "ftrip.io.catalog-service\ftrip.io.catalog-service.csproj", "{4C61C156-3029-4087-A707-49A15581F74A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ftrip.io.catalog-service", "ftrip.io.catalog-service\ftrip.io.catalog-service.csproj", "{4C61C156-3029-4087-A707-49A15581F74A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ftrip.io.catalog-service.contracts", "ftrip.io.catalog-service.contracts\ftrip.io.catalog-service.contracts.csproj", "{1768369C-B3E5-47F9-8CBC-386262E5996D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ftrip.io.catalog-service.contracts", "ftrip.io.catalog-service.contracts\ftrip.io.catalog-service.contracts.csproj", "{1768369C-B3E5-47F9-8CBC-386262E5996D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ftrip.io.catalog-service.unit-tests", "ftrip.io.catalog-service.unit-tests\ftrip.io.catalog-service.unit-tests.csproj", "{0A745C21-DCCE-412E-B98C-AA4F755A56C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1768369C-B3E5-47F9-8CBC-386262E5996D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1768369C-B3E5-47F9-8CBC-386262E5996D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1768369C-B3E5-47F9-8CBC-386262E5996D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A745C21-DCCE-412E-B98C-AA4F755A56C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A745C21-DCCE-412E-B98C-AA4F755A56C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A745C21-DCCE-412E-B98C-AA4F755A56C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A745C21-DCCE-412E-B98C-AA4F755A56C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
