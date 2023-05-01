@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ftrip.io.catalog_service.Installers;
 
 namespace ftrip.io.catalog_service
 {
@@ -42,7 +43,8 @@ namespace ftrip.io.catalog_service
                 new MariadbInstaller<DatabaseContext>(services),
                 new MariadbHealthCheckInstaller(services),
                 new CQRSInstaller<Startup>(services),
-                new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer)
+                //new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer),
+                new DependenciesIntaller(services)
             ).Install();
         }
 
