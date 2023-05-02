@@ -1,7 +1,6 @@
 ﻿using ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.ReadById;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -21,15 +20,15 @@ namespace ftrip.io.catalog_service.Accommodations
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ReadById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> ReadById(Guid id, CancellationToken ct = default)
         {
-            return Ok(await _mediator.Send(new ReadByIdQuery() { Id = id }, cancellationToken));
+            return Ok(await _mediator.Send(new ReadByIdQuery() { Id = id }, ct));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateAccommodationRequest request, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create(CreateAccommodationRequest request, CancellationToken ct = default)
         {
-            return Ok(await _mediator.Send(request, cancellationToken));
+            return Ok(await _mediator.Send(request, ct));
         }
     }
 }

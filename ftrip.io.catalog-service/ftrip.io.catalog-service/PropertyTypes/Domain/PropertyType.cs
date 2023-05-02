@@ -1,7 +1,7 @@
 ﻿using ftrip.io.framework.Domain;
 using System;
 
-namespace ftrip.io.catalog_service.Accommodations.Domain
+namespace ftrip.io.catalog_service.PropertyTypes.Domain
 {
     public class PropertyType : Entity<Guid>
     {

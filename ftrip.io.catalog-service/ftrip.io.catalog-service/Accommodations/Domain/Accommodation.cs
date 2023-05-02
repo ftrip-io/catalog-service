@@ -1,4 +1,6 @@
-﻿using ftrip.io.framework.Domain;
+﻿using ftrip.io.catalog_service.Amenities.Domain;
+using ftrip.io.catalog_service.PropertyTypes.Domain;
+using ftrip.io.framework.Domain;
 using System;
 using System.Collections.Generic;
 
@@ -34,11 +36,19 @@ namespace ftrip.io.catalog_service.Accommodations.Domain
         public virtual ICollection<AccommodationAmenity> Amenities { get; set; }
         public virtual ICollection<Availability> Availabilities { get; set; }
         public virtual ICollection<PriceDiff> PriceDiffs { get; set; }
-
     }
 
     public enum PlaceType
     {
         ENTIRE_PLACE, PRIVATE_ROOM, SHARED_ROOM
+    }
+
+    public class AccommodationAmenity : Entity<Guid>
+    {
+        public Guid AmenityId { get; set; }
+        public Guid AccommodationId { get; set; }
+        public bool IsPresent { get; set; }
+
+        public virtual Amenity Amenity { get; set; }
     }
 }

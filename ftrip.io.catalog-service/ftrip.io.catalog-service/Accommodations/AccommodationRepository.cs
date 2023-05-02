@@ -5,7 +5,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Linq;
 
 namespace ftrip.io.catalog_service.Accommodations
 {

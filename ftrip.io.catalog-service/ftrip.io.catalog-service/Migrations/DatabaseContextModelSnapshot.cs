@@ -152,75 +152,6 @@ namespace ftrip.io.catalog_service.Migrations
                     b.ToTable("AccommodationAmenities");
                 });
 
-            modelBuilder.Entity("ftrip.io.catalog_service.Accommodations.Domain.Amenity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("AmenityTypeId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Icon")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AmenityTypeId");
-
-                    b.ToTable("Amenities");
-                });
-
-            modelBuilder.Entity("ftrip.io.catalog_service.Accommodations.Domain.AmenityType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AmenityTypes");
-                });
-
             modelBuilder.Entity("ftrip.io.catalog_service.Accommodations.Domain.Availability", b =>
                 {
                     b.Property<Guid>("Id")
@@ -348,7 +279,76 @@ namespace ftrip.io.catalog_service.Migrations
                     b.ToTable("PriceDiff");
                 });
 
-            modelBuilder.Entity("ftrip.io.catalog_service.Accommodations.Domain.PropertyType", b =>
+            modelBuilder.Entity("ftrip.io.catalog_service.Amenities.Domain.Amenity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("AmenityTypeId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AmenityTypeId");
+
+                    b.ToTable("Amenities");
+                });
+
+            modelBuilder.Entity("ftrip.io.catalog_service.Amenities.Domain.AmenityType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AmenityTypes");
+                });
+
+            modelBuilder.Entity("ftrip.io.catalog_service.PropertyTypes.Domain.PropertyType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -388,7 +388,7 @@ namespace ftrip.io.catalog_service.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ftrip.io.catalog_service.Accommodations.Domain.PropertyType", "PropertyType")
+                    b.HasOne("ftrip.io.catalog_service.PropertyTypes.Domain.PropertyType", "PropertyType")
                         .WithMany()
                         .HasForeignKey("PropertyTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -403,18 +403,9 @@ namespace ftrip.io.catalog_service.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ftrip.io.catalog_service.Accommodations.Domain.Amenity", "Amenity")
+                    b.HasOne("ftrip.io.catalog_service.Amenities.Domain.Amenity", "Amenity")
                         .WithMany()
                         .HasForeignKey("AmenityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ftrip.io.catalog_service.Accommodations.Domain.Amenity", b =>
-                {
-                    b.HasOne("ftrip.io.catalog_service.Accommodations.Domain.AmenityType", "Type")
-                        .WithMany()
-                        .HasForeignKey("AmenityTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -433,6 +424,15 @@ namespace ftrip.io.catalog_service.Migrations
                     b.HasOne("ftrip.io.catalog_service.Accommodations.Domain.Accommodation", null)
                         .WithMany("PriceDiffs")
                         .HasForeignKey("AccommodationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ftrip.io.catalog_service.Amenities.Domain.Amenity", b =>
+                {
+                    b.HasOne("ftrip.io.catalog_service.Amenities.Domain.AmenityType", "Type")
+                        .WithMany()
+                        .HasForeignKey("AmenityTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

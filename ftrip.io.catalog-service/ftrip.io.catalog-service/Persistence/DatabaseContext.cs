@@ -1,4 +1,6 @@
 ﻿using ftrip.io.catalog_service.Accommodations.Domain;
+using ftrip.io.catalog_service.Amenities.Domain;
+using ftrip.io.catalog_service.PropertyTypes.Domain;
 using ftrip.io.framework.Contexts;
 using ftrip.io.framework.Persistence.Sql.Database;
 using Microsoft.EntityFrameworkCore;

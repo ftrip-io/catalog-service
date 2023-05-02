@@ -1,7 +1,7 @@
 ﻿using ftrip.io.framework.Domain;
 using System;
 
-namespace ftrip.io.catalog_service.Accommodations.Domain
+namespace ftrip.io.catalog_service.Amenities.Domain
 {
     public class Amenity : Entity<Guid>
     {
@@ -16,14 +16,5 @@ namespace ftrip.io.catalog_service.Accommodations.Domain
     public class AmenityType : Entity<Guid>
     {
         public string Name { get; set; }
-    }
-
-    public class AccommodationAmenity : Entity<Guid>
-    {
-        public Guid AmenityId { get; set; }
-        public Guid AccommodationId { get; set; }
-        public bool IsPresent { get; set; }
-
-        public virtual Amenity Amenity { get; set; }
     }
 }
