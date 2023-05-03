@@ -20,9 +20,9 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.ReadById
             _stringManager = stringManager;
         }
 
-        public async Task<Accommodation> Handle(ReadByIdQuery request, CancellationToken ct)
+        public async Task<Accommodation> Handle(ReadByIdQuery request, CancellationToken cancellationToken)
         {
-            var accommodation = await _accommodationRepository.ReadById(request.Id, ct);
+            var accommodation = await _accommodationRepository.Read(request.Id, cancellationToken);
             if (accommodation == null)
                 throw new MissingEntityException(_stringManager.Format("Common_MissingEntity", request.Id));
 

@@ -32,9 +32,11 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
             RuleFor(request => request.BathroomCount)
                 .GreaterThanOrEqualTo(0);
 
-            RuleFor(request => request.NoticePeriod);
+            RuleFor(request => request.NoticePeriod)
+                .InclusiveBetween(0, 7);
 
-            RuleFor(request => request.BookingAdvancePeriod);
+            RuleFor(request => request.BookingAdvancePeriod)
+                .InclusiveBetween(-1, 12);
 
             RuleFor(request => request.CheckInFrom)
                 .InclusiveBetween(0, 24);
@@ -56,8 +58,6 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
 
             RuleFor(request => request.Price)
                 .GreaterThan(0m);
-
-            RuleFor(request => request.HouseRules);
 
             RuleFor(request => request.HostId)
                 .NotEmpty();
@@ -83,17 +83,11 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
             RuleFor(request => request.Country)
                 .NotEmpty();
 
-            RuleFor(request => request.Region);
-
             RuleFor(request => request.City)
                 .NotEmpty();
 
-            RuleFor(request => request.PostalCode);
-
             RuleFor(request => request.Address)
                 .NotEmpty();
-
-            RuleFor(request => request.Apt);
 
             RuleFor(request => request.Longitude)
                 .InclusiveBetween(-180, 180);

@@ -12,8 +12,7 @@ namespace ftrip.io.catalog_service.Amenities
 {
     public interface IAmenityRepository : IRepository<Amenity, Guid>
     {
-        Task<ICollection<Amenity>> ReadByIds(ICollection<Guid> ids, CancellationToken cancellationToken = default);
-        Task<ICollection<Amenity>> ReadAll(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Amenity>> ReadByIds(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     }
 
     public class AmenityRepository : Repository<Amenity, Guid>, IAmenityRepository
@@ -22,12 +21,12 @@ namespace ftrip.io.catalog_service.Amenities
         {
         }
 
-        public async Task<ICollection<Amenity>> ReadAll(CancellationToken cancellationToken = default)
+        public override async Task<IEnumerable<Amenity>> Read(CancellationToken cancellationToken = default)
         {
             return await _entities.Include(a => a.Type).ToListAsync(cancellationToken);
         }
 
-        public async Task<ICollection<Amenity>> ReadByIds(ICollection<Guid> ids, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Amenity>> ReadByIds(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
         {
             return await _entities.Where(a => ids.Contains(a.Id)).ToListAsync(cancellationToken);
         }

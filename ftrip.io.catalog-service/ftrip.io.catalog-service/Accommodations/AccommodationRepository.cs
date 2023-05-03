@@ -10,7 +10,6 @@ namespace ftrip.io.catalog_service.Accommodations
 {
     public interface IAccommodationRepository : IRepository<Accommodation, Guid>
     {
-        Task<Accommodation> ReadById(Guid id, CancellationToken cancellationToken = default);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -19,7 +18,7 @@ namespace ftrip.io.catalog_service.Accommodations
         {
         }
 
-        public async Task<Accommodation> ReadById(Guid id, CancellationToken cancellationToken = default)
+        public override async Task<Accommodation> Read(Guid id, CancellationToken cancellationToken = default)
         {
             return await _entities
                 .Include(a => a.PropertyType)

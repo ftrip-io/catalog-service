@@ -65,12 +65,8 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
                 .Setup(r => r.Read(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                 .Returns((Guid id, CancellationToken _) => Task.FromResult(new PropertyType { Id = id }));
             _amenityRepositoryMock
-                .Setup(r => r.ReadByIds(It.IsAny<ICollection<Guid>>(), It.IsAny<CancellationToken>()))
-                .Returns((ICollection<Guid> ids, CancellationToken _) =>
-                {
-                    ICollection<Amenity> result = ids.Select(id => new Amenity { Id = id }).ToList();
-                    return Task.FromResult(result);
-                });
+                .Setup(r => r.ReadByIds(It.IsAny<IEnumerable<Guid>>(), It.IsAny<CancellationToken>()))
+                .Returns((IEnumerable<Guid> ids, CancellationToken _) => Task.FromResult(ids.Select(id => new Amenity { Id = id })));
 
             var createdAccommodation = await _handler.Handle(request, CancellationToken.None);
 
@@ -100,11 +96,7 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
 
             _amenityRepositoryMock
                 .Setup(r => r.ReadByIds(It.IsAny<ICollection<Guid>>(), It.IsAny<CancellationToken>()))
-                .Returns((ICollection<Guid> ids, CancellationToken _) =>
-                {
-                    ICollection<Amenity> result = new List<Amenity>();
-                    return Task.FromResult(result);
-                });
+                .Returns((IEnumerable<Guid> ids, CancellationToken _) => Task.FromResult(Enumerable.Empty<Amenity>()));
 
             Func<Task> handleAction = () => _handler.Handle(request, CancellationToken.None);
 
@@ -118,6 +110,7 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
                 Title = "Title",
                 Description = "Description",
                 PropertyTypeId = new Guid(),
+                PlaceType = PlaceType.ENTIRE_PLACE,
                 Amenities = new CreateAccommodationAmenityRequest[]
                 {
                     new CreateAccommodationAmenityRequest
@@ -125,6 +118,34 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
                         AmenityId = new Guid(),
                         IsPresent = true
                     }
+                },
+                MaxGuests = 1,
+                MinGuests = 10,
+                MaxNights = 1,
+                MinNights = 10,
+                BedroomCount = 2,
+                BedCount = 3,
+                BathroomCount = 2,
+                BookBeforeTime = 12,
+                BookingAdvancePeriod = 3,
+                CheckInFrom = 10,
+                CheckInTo = 14,
+                HostId = new Guid(),
+                IsDecicatedForGuests = true,
+                Price = 100,
+                IsPerGuest = true,
+                HouseRules = "",
+                NoticePeriod = 10,
+                Location = new CreateLocationRequest
+                {
+                    Country = "",
+                    Region = "",
+                    City = "",
+                    PostalCode = "",
+                    Address = "",
+                    Apt = "",
+                    Latitude = 45,
+                    Longitude = 20
                 }
             };
     }
