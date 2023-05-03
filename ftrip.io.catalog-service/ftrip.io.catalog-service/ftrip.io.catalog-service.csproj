@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="ftrip.io.framework" Version="2.2.0" />
-    <PackageReference Include="ftrip.io.framework.auth" Version="2.2.0" />
-    <PackageReference Include="ftrip.io.framework.messaging" Version="2.2.0" />
+    <PackageReference Include="ftrip.io.framework" Version="2.3.0" />
+    <PackageReference Include="ftrip.io.framework.auth" Version="2.3.0" />
+    <PackageReference Include="ftrip.io.framework.messaging" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.32" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
