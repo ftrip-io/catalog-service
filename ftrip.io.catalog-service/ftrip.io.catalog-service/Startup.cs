@@ -57,8 +57,6 @@ namespace ftrip.io.catalog_service
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors(policy => policy

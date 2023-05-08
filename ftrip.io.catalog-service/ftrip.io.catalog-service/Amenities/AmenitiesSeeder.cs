@@ -1,10 +1,10 @@
 ﻿using ftrip.io.catalog_service.Amenities.Domain;
+using ftrip.io.catalog_service.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,21 +34,17 @@ namespace ftrip.io.catalog_service.Amenities
 
         public async Task Seed()
         {
-            var amenities = new List<Amenity>();
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("amenities");
+            if (stream == null)
+                throw new SeederException($"Unable to read amenities.json");
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("amenities"))
-            {
-                if (stream == null)
-                    throw new ApplicationException($"Unable to read amenities.json");
+            using StreamReader reader = new StreamReader(stream);
 
-                using StreamReader reader = new StreamReader(stream);
+            var amenitiesJson = reader.ReadToEnd();
+            if (string.IsNullOrEmpty(amenitiesJson))
+                throw new SeederException($"No data inside amenities.json");
 
-                var amenitiesJson = reader.ReadToEnd();
-                if (string.IsNullOrEmpty(amenitiesJson))
-                    throw new ApplicationException($"No data inside amenities.json");
-
-                amenities = JsonConvert.DeserializeObject<List<Amenity>>(amenitiesJson);
-            }
+            var amenities = JsonConvert.DeserializeObject<List<Amenity>>(amenitiesJson);
 
             var amenityTypes = amenities.Select(a => a.Type.Name).Distinct().Select(n => new AmenityType { Name = n }).ToList();
 
@@ -56,7 +52,8 @@ namespace ftrip.io.catalog_service.Amenities
 
             amenities.ForEach(a =>
             {
-                a.AmenityTypeId = amenityTypes.FirstOrDefault(at => at.Name == a.Type.Name).Id;
+                var amenityType = amenityTypes.FirstOrDefault(at => at.Name == a.Type.Name);
+                if (amenityType != null) a.AmenityTypeId = amenityType.Id;
                 a.Type = null;
             });
 

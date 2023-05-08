@@ -1,10 +1,10 @@
-﻿using ftrip.io.catalog_service.PropertyTypes.Domain;
+﻿using ftrip.io.catalog_service.Persistence;
+using ftrip.io.catalog_service.PropertyTypes.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -33,21 +33,17 @@ namespace ftrip.io.catalog_service.PropertyTypes
 
         public async Task Seed()
         {
-            var propertyTypes = new List<PropertyType>();
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("propertyTypes");
+            if (stream == null)
+                throw new SeederException($"Unable to read propertyTypes.json");
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("propertyTypes"))
-            {
-                if (stream == null)
-                    throw new ApplicationException($"Unable to read propertyTypes.json");
+            using StreamReader reader = new StreamReader(stream);
 
-                using StreamReader reader = new StreamReader(stream);
+            var propertyTypesJson = reader.ReadToEnd();
+            if (string.IsNullOrEmpty(propertyTypesJson))
+                throw new SeederException($"No data inside propertyTypes.json");
 
-                var propertyTypesJson = reader.ReadToEnd();
-                if (string.IsNullOrEmpty(propertyTypesJson))
-                    throw new ApplicationException($"No data inside propertyTypes.json");
-
-                propertyTypes = JsonConvert.DeserializeObject<List<PropertyType>>(propertyTypesJson);
-            }
+            var propertyTypes = JsonConvert.DeserializeObject<List<PropertyType>>(propertyTypesJson);
 
             await _propertyTypeRepository.CreateMany(propertyTypes, CancellationToken.None);
 
