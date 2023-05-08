@@ -1,0 +1,70 @@
+[
+  {
+    "Name": "House",
+    "Description": "A standalone building designed for people to live in, usually with multiple rooms and amenities such as a kitchen and living room. Houses can range from small cottages to large mansions."
+  },
+  {
+    "Name": "Bed and Breakfast",
+    "Description": "A lodging establishment that typically offers a room or suite for rent, often with breakfast included in the price. These establishments are usually small and independently owned, with a homey, intimate atmosphere."
+  },
+  {
+    "Name": "Bungalow",
+    "Description": "A small, cozy house that typically has a low-pitched roof and wide front porch. Bungalows often have an open floor plan and are designed for single-level living."
+  },
+  {
+    "Name": "Guest Suite",
+    "Description": "A self-contained unit within a larger accommodation, typically with a bedroom and private bathroom. Guest suites may also have additional amenities such as a kitchenette or living area."
+  },
+  {
+    "Name": "Hostel Accommodation",
+    "Description": "A budget-friendly lodging option that typically offers dormitory-style rooms with shared bathrooms and communal areas. Hostels are popular among backpackers and budget travelers."
+  },
+  {
+    "Name": "Chalet",
+    "Description": "A wooden house with a sloping roof and overhanging eaves, often found in mountainous areas. Chalets are popular among skiers and other outdoor enthusiasts."
+  },
+  {
+    "Name": "Loft",
+    "Description": "A large, open space with high ceilings, typically located in a converted industrial or commercial building. Lofts often have an urban, modern feel and are popular among artists and young professionals."
+  },
+  {
+    "Name": "Villa",
+    "Description": "A large, luxurious house typically located in a scenic or resort area. Villas often have multiple bedrooms, outdoor living spaces, and amenities such as a private pool or hot tub."
+  },
+  {
+    "Name": "Apartment",
+    "Description": "A self-contained unit within a larger building, typically with one or more bedrooms, a living room, and a kitchen. Apartments are a popular housing option in urban areas."
+  },
+  {
+    "Name": "Serviced Apartment",
+    "Description": "An apartment that comes with hotel-like services such as daily housekeeping and 24-hour reception. Serviced apartments are popular among long-stay travelers and business travelers."
+  },
+  {
+    "Name": "Hotel",
+    "Description": "A lodging establishment that typically offers rooms or suites for rent, with amenities such as room service and on-site restaurants. Hotels can range from budget-friendly options to luxurious five-star properties."
+  },
+  {
+    "Name": "Boutique Hotel",
+    "Description": "A small, stylish hotel with a unique design and personalized service. Boutique hotels are often independently owned and cater to travelers who want a more intimate, exclusive experience."
+  },
+  {
+    "Name": "Resort",
+    "Description": "A large, full-service lodging establishment typically located in a scenic or recreational area. Resorts often offer a wide range of amenities and activities such as golf courses, spas, and water sports."
+  },
+  {
+    "Name": "Cabin",
+    "Description": "A small, rustic dwelling typically made of wood or logs. Cabins are often located in scenic, remote areas and are popular among outdoor enthusiasts."
+  },
+  {
+    "Name": "Cottage",
+    "Description": "A small, cozy house typically located in a rural or coastal area. Cottages often have a traditional, charming aesthetic and are popular among vacationers looking for a quiet, peaceful retreat."
+  },
+  {
+    "Name": "Guesthouse",
+    "Description": "A small lodging establishment that typically offers a few rooms or suites for rent, often with shared common areas such as a kitchen or living room. Guesthouses are often family-owned and offer a more intimate, personalized experience."
+  },
+  {
+    "Name": "Townhouse",
+    "Description": "A narrow, multi-level house typically located in an urban area. Townhouses are often attached to other houses in a row, and can range from small, simple units to large, luxurious properties."
+  }
+]

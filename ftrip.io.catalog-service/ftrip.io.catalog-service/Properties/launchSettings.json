@@ -21,13 +21,13 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger/index.html",
-      "applicationUrl": "https://localhost:5002;http://localhost:4999",
+      "applicationUrl": "http://localhost:4999",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
 
         "DB_SERVER": "localhost",
         "DB_PORT": "3306",
-        "DB_DATABASE": "accommodation_db",
+        "DB_DATABASE": "catalog_db",
         "DB_USER": "root",
         "DB_PASSWORD": "mypass",
 
@@ -37,6 +37,8 @@
         "RMQ_PASSWORD": "password",
 
         "API_PREFIX": "",
+
+        "API_PROXY_URL": "http://localhost:3000",
 
         "JWT_SECRET": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING"
       }

@@ -19,6 +19,7 @@ namespace ftrip.io.catalog_service.Installers
         {
             _services.AddScoped<IAccommodationRepository, AccommodationRepository>();
             _services.AddScoped<IAmenityRepository, AmenityRepository>();
+            _services.AddScoped<IAmenityTypeRepository, AmenityTypeRepository>();
             _services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
         }
     }
