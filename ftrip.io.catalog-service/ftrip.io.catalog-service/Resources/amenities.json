@@ -1,0 +1,173 @@
+[
+  {
+    "name": "Hair dryer",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Cleaning products",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Shampoo",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Conditioner",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Body soap",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Hot water",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Shower gel",
+    "type": { "name": "Bathroom" }
+  },
+  {
+    "name": "Free washer – In unit",
+    "type": { "name": "Bedroom and laundry" }
+  },
+  {
+    "name": "Essentials",
+    "type": { "name": "Bedroom and laundry" },
+    "description": "Towels, bed sheets, soap, and toilet paper"
+  },
+  {
+    "name": "Hangers",
+    "type": { "name": "Bedroom and laundry" }
+  },
+  {
+    "name": "Bed linens",
+    "type": { "name": "Bedroom and laundry" }
+  },
+  {
+    "name": "Extra pillows and blankets",
+    "type": { "name": "Bedroom and laundry" }
+  },
+  {
+    "name": "Room-darkening shades",
+    "type": { "name": "Bedroom and laundry" }
+  },
+  {
+    "name": "TV",
+    "type": { "name": "Entertainment" }
+  },
+  {
+    "name": "Piano",
+    "type": { "name": "Entertainment" }
+  },
+  {
+    "name": "Books and reading material",
+    "type": { "name": "Entertainment" }
+  },
+  {
+    "name": "Air conditioning",
+    "type": { "name": "Heating and cooling" }
+  },
+  {
+    "name": "Portable fans",
+    "type": { "name": "Heating and cooling" }
+  },
+  {
+    "name": "Heating",
+    "type": { "name": "Heating and cooling" }
+  },
+  {
+    "name": "Kitchen",
+    "type": { "name": "Kitchen and dining" },
+    "description": "Space where guests can cook their own meals"
+  },
+  {
+    "name": "Refrigerator",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Microwave",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Cooking basics",
+    "type": { "name": "Kitchen and dining" },
+    "description": "Pots and pans, oil, salt and pepper"
+  },
+  {
+    "name": "Dishes and silverware",
+    "type": { "name": "Kitchen and dining" },
+    "description": "Bowls, chopsticks, plates, cups, etc."
+  },
+  {
+    "name": "Freezer",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Hot water kettle",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Wine glasses",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Coffee",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Dining table",
+    "type": { "name": "Kitchen and dining" }
+  },
+  {
+    "name": "Fast wifi",
+    "type": { "name": "Internet and office" }
+  },
+  {
+    "name": "Dedicated workspace",
+    "type": { "name": "Internet and office" }
+  },
+  {
+    "name": "Free street parking",
+    "type": { "name": "Parking and facilities" }
+  },
+  {
+    "name": "Paid parking garage off premises",
+    "type": { "name": "Parking and facilities" }
+  },
+  {
+    "name": "Paid parking on premises",
+    "type": { "name": "Parking and facilities" }
+  },
+  {
+    "name": "Long term stays allowed",
+    "type": { "name": "Services" },
+    "description": "Allow stay for 28 days or more"
+  },
+  {
+    "name": "Self check-in",
+    "type": { "name": "Services" }
+  },
+  {
+    "name": "Building staff",
+    "type": { "name": "Services" },
+    "description": "Someone is available 24 hours a day to let guests in"
+  },
+  {
+    "name": "City skyline view",
+    "type": { "name": "Scenic views" }
+  },
+  {
+    "name": "Mountain view",
+    "type": { "name": "Scenic views" }
+  },
+  {
+    "name": "Resort view",
+    "type": { "name": "Scenic views" }
+  },
+  {
+    "name": "Beach view",
+    "type": { "name": "Scenic views" }
+  }
+]
+
