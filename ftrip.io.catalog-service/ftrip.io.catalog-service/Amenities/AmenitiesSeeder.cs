@@ -18,13 +18,13 @@ namespace ftrip.io.catalog_service.Amenities
     {
         private readonly IAmenityRepository _amenityRepository;
         private readonly IAmenityTypeRepository _amenityTypeRepository;
-        private readonly DbContext _dbc;
+        private readonly DbContext _dbContext;
 
-        public AmenitiesSeeder(IAmenityRepository amenityRepository, IAmenityTypeRepository amenityTypeRepository, DbContext dbc)
+        public AmenitiesSeeder(IAmenityRepository amenityRepository, IAmenityTypeRepository amenityTypeRepository, DbContext dbContext)
         {
             _amenityRepository = amenityRepository;
             _amenityTypeRepository = amenityTypeRepository;
-            _dbc = dbc;
+            _dbContext = dbContext;
         }
 
         public async Task<bool> ShouldSeed()
@@ -59,7 +59,7 @@ namespace ftrip.io.catalog_service.Amenities
 
             await _amenityRepository.CreateMany(amenities, CancellationToken.None);
 
-            await _dbc.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 

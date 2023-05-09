@@ -16,14 +16,12 @@ namespace ftrip.io.catalog_service.PropertyTypes
     public class PropertyTypesSeeder
     {
         private readonly IPropertyTypeRepository _propertyTypeRepository;
-        private readonly DbContext _dbc;
+        private readonly DbContext _dbContext;
 
-        public CancellationToken CancellationToken { get; private set; }
-
-        public PropertyTypesSeeder(IPropertyTypeRepository propertyTypeRepository, DbContext dbc)
+        public PropertyTypesSeeder(IPropertyTypeRepository propertyTypeRepository, DbContext dbContext)
         {
             _propertyTypeRepository = propertyTypeRepository;
-            _dbc = dbc;
+            _dbContext = dbContext;
         }
 
         public async Task<bool> ShouldSeed()
@@ -47,7 +45,7 @@ namespace ftrip.io.catalog_service.PropertyTypes
 
             await _propertyTypeRepository.CreateMany(propertyTypes, CancellationToken.None);
 
-            await _dbc.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 

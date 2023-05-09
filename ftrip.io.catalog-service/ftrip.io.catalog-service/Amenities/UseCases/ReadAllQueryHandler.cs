@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ftrip.io.catalog_service.Amenities.UseCases
 {
-    public class ReadAllQueryHandler :IRequestHandler<ReadAllQuery, IEnumerable<Amenity>>
+    public class ReadAllQueryHandler : IRequestHandler<ReadAllQuery, IEnumerable<Amenity>>
     {
         private readonly IAmenityRepository _amenityRepository;
 
