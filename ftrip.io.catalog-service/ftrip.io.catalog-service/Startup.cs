@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ftrip.io.catalog_service.Installers;
+using System;
 
 namespace ftrip.io.catalog_service
 {
@@ -56,9 +57,13 @@ namespace ftrip.io.catalog_service
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
+
+            app.UseCors(policy => policy
+                .WithOrigins(Environment.GetEnvironmentVariable("API_PROXY_URL"))
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
 
             app.UseAuthentication();
             app.UseAuthorization();

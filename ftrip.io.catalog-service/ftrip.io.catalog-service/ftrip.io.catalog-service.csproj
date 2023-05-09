@@ -34,6 +34,14 @@
     <EmbeddedResource Update="Resources\Strings.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\propertyTypes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>propertyTypes</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\amenities.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>amenities</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <PropertyGroup>
