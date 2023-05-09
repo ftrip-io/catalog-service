@@ -13,12 +13,19 @@ namespace ftrip.io.catalog_service.Amenities
     public interface IAmenityRepository : IRepository<Amenity, Guid>
     {
         Task<IEnumerable<Amenity>> ReadByIds(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Amenity>> CreateMany(IEnumerable<Amenity> amenities, CancellationToken cancellationToken = default);
     }
 
     public class AmenityRepository : Repository<Amenity, Guid>, IAmenityRepository
     {
         public AmenityRepository(DbContext context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<Amenity>> CreateMany(IEnumerable<Amenity> amenities, CancellationToken cancellationToken = default)
+        {
+            await _entities.AddRangeAsync(amenities, cancellationToken);
+            return amenities;
         }
 
         public override async Task<IEnumerable<Amenity>> Read(CancellationToken cancellationToken = default)
@@ -30,7 +37,5 @@ namespace ftrip.io.catalog_service.Amenities
         {
             return await _entities.Where(a => ids.Contains(a.Id)).ToListAsync(cancellationToken);
         }
-
-
     }
 }
