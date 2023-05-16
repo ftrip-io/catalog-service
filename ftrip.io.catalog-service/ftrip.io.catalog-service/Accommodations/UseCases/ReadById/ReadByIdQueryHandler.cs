@@ -22,7 +22,11 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.ReadById
 
         public async Task<Accommodation> Handle(ReadByIdQuery request, CancellationToken cancellationToken)
         {
-            var accommodation = await _accommodationRepository.Read(request.Id, cancellationToken);
+            var accommodation = await (request.Simple
+                ? _accommodationRepository.ReadSimple(request.Id, cancellationToken)
+                : _accommodationRepository.Read(request.Id, cancellationToken)
+            );
+
             if (accommodation == null)
                 throw new MissingEntityException(_stringManager.Format("Common_MissingEntity", request.Id));
 

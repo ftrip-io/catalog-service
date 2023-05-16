@@ -20,5 +20,14 @@ namespace ftrip.io.catalog_service.Persistence
             base(options, currentUserContext)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            IgnoreSoftDelete(typeof(AccommodationAmenity));
+            IgnoreSoftDelete(typeof(Availability));
+            IgnoreSoftDelete(typeof(PriceDiff));
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
