@@ -116,7 +116,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
         protected override Task<bool> AdditionalValidations(UpdateAccommodationPricingRequest request, CancellationToken ct)
         {
             // TODO check existing reservations
-            return base.AdditionalValidations(request, ct);
+            return Task.FromResult(true);
         }
 
         protected override async Task<Accommodation> UpdateAccommodation(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct)
@@ -131,7 +131,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
         protected readonly IStringManager _stringManager;
         protected readonly CurrentUserContext _currentUserContext;
 
-        public PartialAccommodationUpdateRequestHandler(
+        protected PartialAccommodationUpdateRequestHandler(
             IUnitOfWork unitOfWork,
             IAccommodationRepository accommodationRepository,
             IStringManager stringManager,
@@ -158,8 +158,8 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
             var accommodation = await _accommodationRepository.ReadSimple(id);
             if (accommodation == null)
                 throw new MissingEntityException(_stringManager.Format("Common_MissingEntity", id));
-            //if (accommodation.HostId.ToString() != _currentUserContext.Id)
-            //    throw new ForbiddenException();
+            if (accommodation.HostId.ToString() != _currentUserContext.Id)
+                throw new ForbiddenException();
             return true;
         }
 

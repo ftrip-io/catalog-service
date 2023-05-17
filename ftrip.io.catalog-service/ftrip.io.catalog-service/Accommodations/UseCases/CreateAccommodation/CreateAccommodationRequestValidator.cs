@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using ftrip.io.framework.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,8 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
             CreateAccommodationAmenityRequestValidator createAccommodationAmenityRequestValidator,
             CreateLocationRequestValidator createLocationRequestValidator,
             CreateAvailabilityRequestValidator createAvailabilityRequestValidator,
-            CreatePriceDiffRequestValidator createPriceDiffRequestValidator
+            CreatePriceDiffRequestValidator createPriceDiffRequestValidator,
+            IStringManager stringManager
         )
         {
             RuleFor(request => request.Title)
@@ -53,7 +55,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
 
             RuleFor(request => request.CheckInTo - request.CheckInFrom)
                 .GreaterThanOrEqualTo(2)
-                .WithMessage("The check-in window should be at least 2 hours");
+                .WithMessage(stringManager.Format("Validation_CheckIn_WindowLengthAtLeast", 2));
 
             RuleFor(request => request.BookBeforeTime)
                 .InclusiveBetween(0, 24);
@@ -81,7 +83,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
 
             RuleFor(request => request.Availabilities)
                 .Must(BeNonOverlapping)
-                .WithMessage("The availability intervals should not overlap");
+                .WithMessage(stringManager.GetString("Availability_Intervals_No_Overlap"));
 
             RuleForEach(request => request.PriceDiffs)
                 .SetValidator(createPriceDiffRequestValidator);

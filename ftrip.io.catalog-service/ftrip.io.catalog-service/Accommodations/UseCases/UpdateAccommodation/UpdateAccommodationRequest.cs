@@ -2,11 +2,13 @@
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 {
     public abstract class PartialAccommodationUpdateRequest: IRequest<Accommodation>
     {
+        [JsonIgnore]
         public Guid Id { get; set; }
     }
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using ftrip.io.framework.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 {
     public class UpdateAccommodationRequestValidator : AbstractValidator<UpdateAccommodationRequest>
     {
-        public UpdateAccommodationRequestValidator()
+        public UpdateAccommodationRequestValidator(IStringManager stringManager)
         {
             RuleFor(request => request.Title)
                 .NotEmpty()
@@ -45,7 +46,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 
             RuleFor(request => request.CheckInTo - request.CheckInFrom)
                 .GreaterThanOrEqualTo(2)
-                .WithMessage("The check-in window should be at least 2 hours");
+                .WithMessage(stringManager.Format("Validation_CheckIn_WindowLengthAtLeast", 2));
 
             RuleFor(request => request.BookBeforeTime)
                 .InclusiveBetween(0, 24);
@@ -135,7 +136,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 
     public class UpdateAccommodationAvailabilitiesRequestValidator : AbstractValidator<UpdateAccommodationAvailabilitiesRequest>
     {
-        public UpdateAccommodationAvailabilitiesRequestValidator(AvailabilityUpdateValidator availabilityUpdateValidator)
+        public UpdateAccommodationAvailabilitiesRequestValidator(AvailabilityUpdateValidator availabilityUpdateValidator, IStringManager stringManager)
         {
             RuleFor(request => request.BookingAdvancePeriod)
                 .InclusiveBetween(-1, 12);
@@ -145,7 +146,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 
             RuleFor(request => request.Availabilities)
                 .Must(BeNonOverlapping)
-                .WithMessage("The availability intervals should not overlap");
+                .WithMessage(stringManager.GetString("Availability_Intervals_No_Overlap"));
         }
 
         private bool BeNonOverlapping(IEnumerable<AvailabilityUpdate> availabilities)

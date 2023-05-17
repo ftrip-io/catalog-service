@@ -61,6 +61,7 @@ namespace ftrip.io.catalog_service.Accommodations
         {
             var accommodation = await Read(accommodationUpdate.Id, ct);
             if (accommodation == null) return null;
+
             foreach (var existingAccommodationAmenity in accommodation.Amenities)
             {
                 if (!accommodationUpdate.Amenities.Any(aa => aa.Id == existingAccommodationAmenity.Id))
@@ -68,9 +69,7 @@ namespace ftrip.io.catalog_service.Accommodations
             }
             foreach (var accommodationAmenityUpdate in accommodationUpdate.Amenities)
             {
-                var existingAccommodationAmenity = accommodation.Amenities
-                    .Where(aa => aa.Id == accommodationAmenityUpdate.Id)
-                    .SingleOrDefault();
+                var existingAccommodationAmenity = accommodation.Amenities.SingleOrDefault(aa => aa.Id == accommodationAmenityUpdate.Id);
 
                 if (existingAccommodationAmenity != null)
                     _context.Entry(existingAccommodationAmenity).CurrentValues.SetValues(accommodationAmenityUpdate);
@@ -95,9 +94,7 @@ namespace ftrip.io.catalog_service.Accommodations
             }
             foreach (var availabilityUpdate in accommodationUpdate.Availabilities)
             {
-                var existingAvailability = accommodation.Availabilities
-                    .Where(a => a.Id == availabilityUpdate.Id)
-                    .SingleOrDefault();
+                var existingAvailability = accommodation.Availabilities.SingleOrDefault(a => a.Id == availabilityUpdate.Id);
 
                 if (existingAvailability != null)
                     _context.Entry(existingAvailability).CurrentValues.SetValues(availabilityUpdate);
@@ -123,9 +120,7 @@ namespace ftrip.io.catalog_service.Accommodations
             }
             foreach (var priceDiffUpdate in accommodationUpdate.PriceDiffs)
             {
-                var existingPriceDiff = accommodation.PriceDiffs
-                    .Where(pd => pd.Id == priceDiffUpdate.Id)
-                    .SingleOrDefault();
+                var existingPriceDiff = accommodation.PriceDiffs.SingleOrDefault(pd => pd.Id == priceDiffUpdate.Id);
 
                 if (existingPriceDiff != null)
                     _context.Entry(existingPriceDiff).CurrentValues.SetValues(priceDiffUpdate);

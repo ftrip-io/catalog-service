@@ -26,48 +26,48 @@ namespace ftrip.io.catalog_service.Accommodations
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ReadById(Guid id, [FromQuery] bool s, CancellationToken ct = default)
+        public async Task<IActionResult> ReadById(Guid id, [FromQuery] bool simple, CancellationToken ct = default)
         {
-            return Ok(await _mediator.Send(new ReadByIdQuery { Id = id, Simple = s }, ct));
+            return Ok(await _mediator.Send(new ReadByIdQuery { Id = id, Simple = simple }, ct));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccommodationRequest request, CancellationToken ct = default)
         {
-            request.HostId = Guid.Parse(_currentUserContext.Id);
+            if (!string.IsNullOrEmpty(_currentUserContext.Id)) request.HostId = Guid.Parse(_currentUserContext.Id);
             return Ok(await _mediator.Send(request, ct));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateAccommodationRequest request, CancellationToken ct = default)
+        public async Task<IActionResult> Update(Guid id, UpdateAccommodationRequest request, CancellationToken ct = default)
         {
             request.Id = id;
             return Ok(await _mediator.Send(request, ct));
         }
 
         [HttpPut("{id}/amenities")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateAccommodationAmenitiesRequest request, CancellationToken ct = default)
+        public async Task<IActionResult> Update(Guid id, UpdateAccommodationAmenitiesRequest request, CancellationToken ct = default)
         {
             request.Id = id;
             return Ok(await _mediator.Send(request, ct));
         }
 
         [HttpPut("{id}/availabilities")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateAccommodationAvailabilitiesRequest request, CancellationToken ct = default)
+        public async Task<IActionResult> Update(Guid id, UpdateAccommodationAvailabilitiesRequest request, CancellationToken ct = default)
         {
             request.Id = id;
             return Ok(await _mediator.Send(request, ct));
         }
 
         [HttpPut("{id}/location")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateAccommodationLocationRequest request, CancellationToken ct = default)
+        public async Task<IActionResult> Update(Guid id, UpdateAccommodationLocationRequest request, CancellationToken ct = default)
         {
             request.Id = id;
             return Ok(await _mediator.Send(request, ct));
         }
 
         [HttpPut("{id}/pricing")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateAccommodationPricingRequest request, CancellationToken ct = default)
+        public async Task<IActionResult> Update(Guid id, UpdateAccommodationPricingRequest request, CancellationToken ct = default)
         {
             request.Id = id;
             return Ok(await _mediator.Send(request, ct));
