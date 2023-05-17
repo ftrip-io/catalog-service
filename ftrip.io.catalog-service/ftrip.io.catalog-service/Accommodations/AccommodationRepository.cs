@@ -5,11 +5,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Threading;
+using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
+using System.Linq;
 
 namespace ftrip.io.catalog_service.Accommodations
 {
     public interface IAccommodationRepository : IRepository<Accommodation, Guid>
     {
+        Task<Accommodation> Update(UpdateAccommodationRequest accommodationUpdate, CancellationToken ct = default);
+        Task<Accommodation> Update(UpdateAccommodationLocationRequest accommodationUpdate, CancellationToken ct = default);
+        Task<Accommodation> Update(UpdateAccommodationAmenitiesRequest accommodationUpdate, CancellationToken ct = default);
+        Task<Accommodation> Update(UpdateAccommodationAvailabilitiesRequest accommodationUpdate, CancellationToken ct = default);
+        Task<Accommodation> Update(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct = default);
+        Task<Accommodation> ReadSimple(Guid id, CancellationToken ct = default);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -24,7 +32,118 @@ namespace ftrip.io.catalog_service.Accommodations
                 .Include(a => a.PropertyType)
                 .Include(a => a.Amenities).ThenInclude(aa => aa.Amenity)
                 .Include(a => a.Location)
+                .Include(a => a.Availabilities)
+                .Include(a => a.PriceDiffs)
                 .FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
+        }
+
+        public Task<Accommodation> ReadSimple(Guid id, CancellationToken ct = default) => base.Read(id, ct);
+
+        public async Task<Accommodation> Update(UpdateAccommodationRequest accommodationUpdate, CancellationToken ct = default)
+        {
+            var accommodation = await Read(accommodationUpdate.Id, ct);
+            if (accommodation != null)
+            {
+                _context.Entry(accommodation).CurrentValues.SetValues(accommodationUpdate);
+            }
+            return accommodation;
+        }
+        public async Task<Accommodation> Update(UpdateAccommodationLocationRequest accommodationUpdate, CancellationToken ct = default)
+        {
+            var accommodation = await Read(accommodationUpdate.Id, ct);
+            if (accommodation != null)
+            {
+                _context.Entry(accommodation.Location).CurrentValues.SetValues(accommodationUpdate.Location);
+            }
+            return accommodation;
+        }
+        public async Task<Accommodation> Update(UpdateAccommodationAmenitiesRequest accommodationUpdate, CancellationToken ct = default)
+        {
+            var accommodation = await Read(accommodationUpdate.Id, ct);
+            if (accommodation == null) return null;
+
+            foreach (var existingAccommodationAmenity in accommodation.Amenities)
+            {
+                if (!accommodationUpdate.Amenities.Any(aa => aa.Id == existingAccommodationAmenity.Id))
+                    _context.Remove(existingAccommodationAmenity);
+            }
+            foreach (var accommodationAmenityUpdate in accommodationUpdate.Amenities)
+            {
+                var existingAccommodationAmenity = accommodation.Amenities.SingleOrDefault(aa => aa.Id == accommodationAmenityUpdate.Id);
+
+                if (existingAccommodationAmenity != null)
+                    _context.Entry(existingAccommodationAmenity).CurrentValues.SetValues(accommodationAmenityUpdate);
+                else
+                    accommodation.Amenities.Add(new AccommodationAmenity
+                    {
+                        AmenityId = accommodationAmenityUpdate.AmenityId,
+                        IsPresent = accommodationAmenityUpdate.IsPresent,
+                    });
+            }
+            return accommodation;
+        }
+        public async Task<Accommodation> Update(UpdateAccommodationAvailabilitiesRequest accommodationUpdate, CancellationToken ct = default)
+        {
+            var accommodation = await Read(accommodationUpdate.Id, ct);
+            if (accommodation == null) return null;
+            _context.Entry(accommodation).CurrentValues.SetValues(accommodationUpdate);
+            foreach (var existingAvailability in accommodation.Availabilities)
+            {
+                if (!accommodationUpdate.Availabilities.Any(a => a.Id == existingAvailability.Id))
+                    _context.Remove(existingAvailability);
+            }
+            foreach (var availabilityUpdate in accommodationUpdate.Availabilities)
+            {
+                var existingAvailability = accommodation.Availabilities.SingleOrDefault(a => a.Id == availabilityUpdate.Id);
+
+                if (existingAvailability != null)
+                    _context.Entry(existingAvailability).CurrentValues.SetValues(availabilityUpdate);
+                else
+                    accommodation.Availabilities.Add(new Availability
+                    {
+                        FromDate = availabilityUpdate.FromDate,
+                        ToDate = availabilityUpdate.ToDate,
+                        IsAvailable = availabilityUpdate.IsAvailable,
+                    });
+            }
+            return accommodation;
+        }
+        public async Task<Accommodation> Update(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct = default)
+        {
+            var accommodation = await Read(accommodationUpdate.Id, ct);
+            if (accommodation == null) return null;
+            _context.Entry(accommodation).CurrentValues.SetValues(accommodationUpdate);
+            foreach (var existingPriceDiff in accommodation.PriceDiffs)
+            {
+                if (!accommodationUpdate.PriceDiffs.Any(pd => pd.Id == existingPriceDiff.Id))
+                    _context.Remove(existingPriceDiff);
+            }
+            foreach (var priceDiffUpdate in accommodationUpdate.PriceDiffs)
+            {
+                var existingPriceDiff = accommodation.PriceDiffs.SingleOrDefault(pd => pd.Id == priceDiffUpdate.Id);
+
+                if (existingPriceDiff != null)
+                    _context.Entry(existingPriceDiff).CurrentValues.SetValues(priceDiffUpdate);
+                else
+                    accommodation.PriceDiffs.Add(new PriceDiff
+                    {
+                        Percentage = priceDiffUpdate.Percentage,
+                        When = priceDiffUpdate.When,
+                    });
+            }
+            return accommodation;
+        }
+
+        public override async Task<Accommodation> Delete(Guid id, CancellationToken cancellationToken = default)
+        {
+            var accommodation = await Read(id, cancellationToken);
+            if (accommodation == null) return accommodation;
+            _entities.Remove(accommodation);
+            _context.Remove(accommodation.Location);
+            _context.RemoveRange(accommodation.Amenities);
+            _context.RemoveRange(accommodation.Availabilities);
+            _context.RemoveRange(accommodation.PriceDiffs);
+            return accommodation;
         }
     }
 }
