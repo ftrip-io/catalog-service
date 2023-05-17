@@ -1,13 +1,18 @@
 ﻿using ftrip.io.catalog_service.Accommodations.Domain;
-using ftrip.io.framework.Mapping;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
+namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 {
-    [Mappable(Destination = typeof(Accommodation))]
-    public class CreateAccommodationRequest : IRequest<Accommodation>
+    public abstract class PartialAccommodationUpdateRequest: IRequest<Accommodation>
+    {
+        [JsonIgnore]
+        public Guid Id { get; set; }
+    }
+
+    public class UpdateAccommodationRequest : PartialAccommodationUpdateRequest
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -19,32 +24,46 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
         public int BedCount { get; set; }
         public int BathroomCount { get; set; }
         public int NoticePeriod { get; set; }
-        public int BookingAdvancePeriod { get; set; }
         public int CheckInFrom { get; set; }
         public int CheckInTo { get; set; }
         public int BookBeforeTime { get; set; }
         public int MinNights { get; set; }
         public int MaxNights { get; set; }
-        public decimal Price { get; set; }
-        public bool IsPerGuest { get; set; }
-        public Guid HostId { get; set; }
         public string HouseRules { get; set; }
         public Guid PropertyTypeId { get; set; }
-        public CreateLocationRequest Location { get; set; }
-        public ICollection<CreateAccommodationAmenityRequest> Amenities { get; set; }
-        public ICollection<CreateAvailabilityRequest> Availabilities { get; set; }
-        public ICollection<CreatePriceDiffRequest> PriceDiffs { get; set; }
     }
 
-    [Mappable(Destination = typeof(AccommodationAmenity))]
-    public class CreateAccommodationAmenityRequest
+    public class UpdateAccommodationLocationRequest : PartialAccommodationUpdateRequest
     {
+        public LocationUpdate Location { get; set; }
+    }
+
+    public class UpdateAccommodationAmenitiesRequest : PartialAccommodationUpdateRequest
+    {
+        public ICollection<AccommodationAmenityUpdate> Amenities { get; set; }
+    }
+
+    public class UpdateAccommodationAvailabilitiesRequest : PartialAccommodationUpdateRequest
+    {
+        public int BookingAdvancePeriod { get; set; }
+        public ICollection<AvailabilityUpdate> Availabilities { get; set; }
+    }
+
+    public class UpdateAccommodationPricingRequest : PartialAccommodationUpdateRequest
+    {
+        public decimal Price { get; set; }
+        public bool IsPerGuest { get; set; }
+        public ICollection<PriceDiffUpdate> PriceDiffs { get; set; }
+    }
+
+    public class AccommodationAmenityUpdate
+    {
+        public Guid Id { get; set; }
         public Guid AmenityId { get; set; }
         public bool IsPresent { get; set; }
     }
 
-    [Mappable(Destination = typeof(Location))]
-    public class CreateLocationRequest
+    public class LocationUpdate
     {
         public string Country { get; set; }
         public string Region { get; set; }
@@ -56,17 +75,17 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
         public float Longitude { get; set; }
     }
 
-    [Mappable(Destination = typeof(Availability))]
-    public class CreateAvailabilityRequest
+    public class AvailabilityUpdate
     {
+        public Guid Id { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public bool IsAvailable { get; set; }
     }
 
-    [Mappable(Destination = typeof(PriceDiff))]
-    public class CreatePriceDiffRequest
+    public class PriceDiffUpdate
     {
+        public Guid Id { get; set; }
         public string When { get; set; }
         public float Percentage { get; set; }
     }

@@ -1,10 +1,19 @@
 ﻿using FluentValidation;
+using ftrip.io.framework.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
 {
     public class CreateAccommodationRequestValidator : AbstractValidator<CreateAccommodationRequest>
     {
-        public CreateAccommodationRequestValidator()
+        public CreateAccommodationRequestValidator(
+            CreateAccommodationAmenityRequestValidator createAccommodationAmenityRequestValidator,
+            CreateLocationRequestValidator createLocationRequestValidator,
+            CreateAvailabilityRequestValidator createAvailabilityRequestValidator,
+            CreatePriceDiffRequestValidator createPriceDiffRequestValidator,
+            IStringManager stringManager
+        )
         {
             RuleFor(request => request.Title)
                 .NotEmpty()
@@ -45,7 +54,8 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
                 .InclusiveBetween(0, 24);
 
             RuleFor(request => request.CheckInTo - request.CheckInFrom)
-                .GreaterThanOrEqualTo(2);
+                .GreaterThanOrEqualTo(2)
+                .WithMessage(stringManager.Format("Validation_CheckIn_WindowLengthAtLeast", 2));
 
             RuleFor(request => request.BookBeforeTime)
                 .InclusiveBetween(0, 24);
@@ -59,11 +69,30 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
             RuleFor(request => request.Price)
                 .GreaterThan(0m);
 
-            RuleFor(request => request.HostId)
-                .NotEmpty();
-
             RuleFor(request => request.PropertyTypeId)
                 .NotEmpty();
+
+            RuleFor(request => request.Location)
+                .SetValidator(createLocationRequestValidator);
+
+            RuleForEach(request => request.Amenities)
+                .SetValidator(createAccommodationAmenityRequestValidator);
+
+            RuleForEach(request => request.Availabilities)
+                .SetValidator(createAvailabilityRequestValidator);
+
+            RuleFor(request => request.Availabilities)
+                .Must(BeNonOverlapping)
+                .WithMessage(stringManager.GetString("Availability_Intervals_No_Overlap"));
+
+            RuleForEach(request => request.PriceDiffs)
+                .SetValidator(createPriceDiffRequestValidator);
+        }
+
+        private bool BeNonOverlapping(IEnumerable<CreateAvailabilityRequest> availabilities)
+        {
+            var ordered = availabilities.OrderBy(a => a.FromDate);
+            return ordered.Zip(ordered.Skip(1), (a1, a2) => a1.ToDate < a2.FromDate).All(v => v);
         }
     }
 
@@ -76,7 +105,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
         }
     }
 
-    public class CreateLocationRequestValidator: AbstractValidator<CreateLocationRequest>
+    public class CreateLocationRequestValidator : AbstractValidator<CreateLocationRequest>
     {
         public CreateLocationRequestValidator()
         {
@@ -94,6 +123,30 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation
 
             RuleFor(request => request.Latitude)
                 .InclusiveBetween(-90, 90);
+        }
+    }
+
+    public class CreateAvailabilityRequestValidator : AbstractValidator<CreateAvailabilityRequest>
+    {
+        public CreateAvailabilityRequestValidator()
+        {
+            RuleFor(request => request.FromDate)
+                .NotEmpty();
+
+            RuleFor(request => request.ToDate)
+                .NotEmpty();
+        }
+    }
+
+    public class CreatePriceDiffRequestValidator : AbstractValidator<CreatePriceDiffRequest>
+    {
+        public CreatePriceDiffRequestValidator()
+        {
+            RuleFor(request => request.Percentage)
+                .NotEmpty();
+
+            RuleFor(request => request.When)
+                .Matches(@"0 0( (\*|(\d+(-\d+)?)(,(\d+(-\d+)?))*)){3}");
         }
     }
 }
