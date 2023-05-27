@@ -20,6 +20,7 @@ using ftrip.io.catalog_service.Installers;
 using System;
 using ftrip.io.framework.Tracing;
 using ftrip.io.framework.Correlation;
+using Serilog;
 
 namespace ftrip.io.catalog_service
 {
@@ -65,6 +66,7 @@ namespace ftrip.io.catalog_service
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 
