@@ -28,6 +28,9 @@ namespace ftrip.io.catalog_service.Persistence
             IgnoreSoftDelete(typeof(PriceDiff));
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Availability>().Property(a => a.FromDate).HasColumnType("date");
+            modelBuilder.Entity<Availability>().Property(a => a.ToDate).HasColumnType("date");
         }
     }
 }

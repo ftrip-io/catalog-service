@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ftrip.io.catalog_service.Installers;
 using System;
+using ftrip.io.framework.Tracing;
+using ftrip.io.framework.Correlation;
 
 namespace ftrip.io.catalog_service
 {
@@ -45,7 +47,14 @@ namespace ftrip.io.catalog_service
                 new MariadbHealthCheckInstaller(services),
                 new CQRSInstaller<Startup>(services),
                 new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer),
-                new DependenciesIntaller(services)
+                new DependenciesIntaller(services),
+                new TracingInstaller(services, (tracingSettings) =>
+                {
+                    tracingSettings.ApplicationLabel = "catalog";
+                    tracingSettings.ApplicationVersion = GetType().Assembly.GetName().Version?.ToString() ?? "unknown";
+                    tracingSettings.MachineName = Environment.MachineName;
+                }),
+                new CorrelationInstaller(services)
             ).Install();
         }
 
@@ -67,6 +76,8 @@ namespace ftrip.io.catalog_service
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCorrelation();
 
             app.UseFtripioGlobalExceptionHandler();
 
