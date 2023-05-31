@@ -9,6 +9,7 @@ using ftrip.io.catalog_service.PropertyTypes;
 using ftrip.io.catalog_service.PropertyTypes.Domain;
 using ftrip.io.framework.ExceptionHandling.Exceptions;
 using ftrip.io.framework.Globalization;
+using ftrip.io.framework.messaging.Publisher;
 using ftrip.io.framework.Persistence.Contracts;
 using Moq;
 using System;
@@ -27,6 +28,7 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
         private readonly Mock<IAmenityRepository> _amenityRepositoryMock = new Mock<IAmenityRepository>();
         private readonly Mock<IPropertyTypeRepository> _propertyTypeRepositoryMock = new Mock<IPropertyTypeRepository>();
         private readonly Mock<IStringManager> _stringManagerMock = new Mock<IStringManager>();
+        private readonly Mock<IMessagePublisher> _messagePublisher = new Mock<IMessagePublisher>();
 
         private readonly CreateAccommodationRequestHandler _handler;
 
@@ -45,7 +47,8 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
                 _amenityRepositoryMock.Object,
                 _propertyTypeRepositoryMock.Object,
                 mapper,
-                _stringManagerMock.Object
+                _stringManagerMock.Object,
+                _messagePublisher.Object
             );
         }
 

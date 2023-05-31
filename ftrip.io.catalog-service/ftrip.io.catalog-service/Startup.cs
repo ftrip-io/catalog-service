@@ -44,7 +44,7 @@ namespace ftrip.io.catalog_service
                 new MariadbInstaller<DatabaseContext>(services),
                 new MariadbHealthCheckInstaller(services),
                 new CQRSInstaller<Startup>(services),
-                //new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer),
+                new RabbitMQInstaller<Startup>(services, RabbitMQInstallerType.Publisher | RabbitMQInstallerType.Consumer),
                 new DependenciesIntaller(services)
             ).Install();
         }
@@ -77,7 +77,6 @@ namespace ftrip.io.catalog_service
 
             app.UseFtripioSwagger(Configuration.GetSection(nameof(SwaggerUISettings)).Get<SwaggerUISettings>());
             app.UseFtripioHealthCheckUI(Configuration.GetSection(nameof(HealthCheckUISettings)).Get<HealthCheckUISettings>());
-
         }
     }
 }
