@@ -21,6 +21,7 @@ using System;
 using ftrip.io.framework.Tracing;
 using ftrip.io.framework.Correlation;
 using Serilog;
+using ftrip.io.framework.Proxies;
 
 namespace ftrip.io.catalog_service
 {
@@ -55,7 +56,8 @@ namespace ftrip.io.catalog_service
                     tracingSettings.ApplicationVersion = GetType().Assembly.GetName().Version?.ToString() ?? "unknown";
                     tracingSettings.MachineName = Environment.MachineName;
                 }),
-                new CorrelationInstaller(services)
+                new CorrelationInstaller(services),
+                new ProxyGeneratorInstaller(services)
             ).Install();
         }
 

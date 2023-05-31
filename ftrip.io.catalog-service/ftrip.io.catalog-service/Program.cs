@@ -27,7 +27,7 @@ namespace ftrip.io.catalog_service
                     return new LoggingOptions()
                     {
                         ApplicationName = hostingContext.HostingEnvironment.ApplicationName,
-                        ApplicationLabel = "playground",
+                        ApplicationLabel = "catalog",
                         ClientIdAttribute = "X-Forwarded-For",
                         GrafanaLokiUrl = Environment.GetEnvironmentVariable("GRAFANA_LOKI_URL")
                     };
