@@ -4,6 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>ftrip.io.catalog_service.contracts</RootNamespace>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>ftrip.io</Authors>
+    <Company>ftrip.io</Company>
+    <Description>This library contains all necessary catalog-service contracts such as events, commands, and requests/responses that can be used for handling/communicating in other services.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Ftrip.io 2023</Copyright>
+    <RepositoryUrl>https://github.com/ftrip-io/ftrip.io</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ftrip-io/ftrip.io</PackageProjectUrl>
+    <PackageReleaseNotes>Initial version with AccommodationCreatedEvent.</PackageReleaseNotes>
+    <PackageTags>ftrip.io, catalog-service, contracts</PackageTags>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(Configuration)'=='Release'">
