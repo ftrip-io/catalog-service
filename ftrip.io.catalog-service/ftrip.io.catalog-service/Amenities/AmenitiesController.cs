@@ -1,4 +1,4 @@
-﻿using ftrip.io.catalog_service.Amenities.UseCases;
+﻿using ftrip.io.catalog_service.Amenities.UseCases.ReadAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;

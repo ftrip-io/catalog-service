@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ftrip.io.catalog_service.Amenities.UseCases
+namespace ftrip.io.catalog_service.Amenities.UseCases.ReadAll
 {
     public class ReadAllQueryHandler : IRequestHandler<ReadAllQuery, IEnumerable<Amenity>>
     {

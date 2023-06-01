@@ -2,6 +2,7 @@
 using ftrip.io.catalog_service.Amenities;
 using ftrip.io.catalog_service.PropertyTypes;
 using ftrip.io.framework.Installers;
+using ftrip.io.framework.Proxies;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ftrip.io.catalog_service.Installers
@@ -17,10 +18,10 @@ namespace ftrip.io.catalog_service.Installers
 
         public void Install()
         {
-            _services.AddScoped<IAccommodationRepository, AccommodationRepository>();
-            _services.AddScoped<IAmenityRepository, AmenityRepository>();
-            _services.AddScoped<IAmenityTypeRepository, AmenityTypeRepository>();
-            _services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
+            _services.AddProxiedScoped<IAccommodationRepository, AccommodationRepository>();
+            _services.AddProxiedScoped<IAmenityRepository, AmenityRepository>();
+            _services.AddProxiedScoped<IAmenityTypeRepository, AmenityTypeRepository>();
+            _services.AddProxiedScoped<IPropertyTypeRepository, PropertyTypeRepository>();
         }
     }
 }

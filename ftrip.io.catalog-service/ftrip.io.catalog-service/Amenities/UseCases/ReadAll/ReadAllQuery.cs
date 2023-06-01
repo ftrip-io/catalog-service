@@ -2,7 +2,7 @@
 using MediatR;
 using System.Collections.Generic;
 
-namespace ftrip.io.catalog_service.Amenities.UseCases
+namespace ftrip.io.catalog_service.Amenities.UseCases.ReadAll
 {
     public class ReadAllQuery : IRequest<IEnumerable<Amenity>> { }
 }
