@@ -1,4 +1,5 @@
-﻿using ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation;
+﻿using ftrip.io.catalog_service.Accommodations.UseCases.CalculatePrice;
+using ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.DeleteAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.ReadById;
 using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
@@ -86,6 +87,18 @@ namespace ftrip.io.catalog_service.Accommodations
         public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
         {
             return Ok(await _mediator.Send(new DeleteAccommodationRequest { Id = id }, ct));
+        }
+
+        [HttpGet("{id}/calc-price")]
+        public async Task<IActionResult> CalculatePrice(Guid id, DateTime checkIn, DateTime checkOut, int guests, CancellationToken ct = default)
+        {
+            return Ok(await _mediator.Send(new CalculatePriceQuery
+            {
+                AccommodationId = id,
+                CheckInDate = checkIn,
+                CheckOutDate = checkOut,
+                Guests = guests,
+            }, ct));
         }
     }
 }

@@ -2,7 +2,7 @@
 using MediatR;
 using System.Collections.Generic;
 
-namespace ftrip.io.catalog_service.PropertyTypes.UseCases
+namespace ftrip.io.catalog_service.PropertyTypes.UseCases.ReadAll
 {
     public class ReadAllQuery : IRequest<IEnumerable<PropertyType>> { }
 }

@@ -74,10 +74,11 @@ namespace ftrip.io.catalog_service.Accommodations
                 if (existingAccommodationAmenity != null)
                     _context.Entry(existingAccommodationAmenity).CurrentValues.SetValues(accommodationAmenityUpdate);
                 else
-                    accommodation.Amenities.Add(new AccommodationAmenity
+                    _context.Add(new AccommodationAmenity
                     {
                         AmenityId = accommodationAmenityUpdate.AmenityId,
                         IsPresent = accommodationAmenityUpdate.IsPresent,
+                        AccommodationId = accommodation.Id
                     });
             }
             return accommodation;
@@ -99,11 +100,12 @@ namespace ftrip.io.catalog_service.Accommodations
                 if (existingAvailability != null)
                     _context.Entry(existingAvailability).CurrentValues.SetValues(availabilityUpdate);
                 else
-                    accommodation.Availabilities.Add(new Availability
+                    _context.Add(new Availability
                     {
                         FromDate = availabilityUpdate.FromDate,
                         ToDate = availabilityUpdate.ToDate,
                         IsAvailable = availabilityUpdate.IsAvailable,
+                        AccommodationId = accommodation.Id
                     });
             }
             return accommodation;
@@ -125,10 +127,11 @@ namespace ftrip.io.catalog_service.Accommodations
                 if (existingPriceDiff != null)
                     _context.Entry(existingPriceDiff).CurrentValues.SetValues(priceDiffUpdate);
                 else
-                    accommodation.PriceDiffs.Add(new PriceDiff
+                    _context.Add(new PriceDiff
                     {
                         Percentage = priceDiffUpdate.Percentage,
                         When = priceDiffUpdate.When,
+                        AccommodationId = accommodation.Id
                     });
             }
             return accommodation;
