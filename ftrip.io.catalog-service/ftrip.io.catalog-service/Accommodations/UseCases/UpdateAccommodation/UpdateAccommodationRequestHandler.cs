@@ -86,17 +86,30 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 
     public class UpdateAccommodationAvailabilitiesRequestHandler : PartialAccommodationUpdateRequestHandler<UpdateAccommodationAvailabilitiesRequest>
     {
+        protected readonly IBookingServiceClient _bookingServiceClient;
+
         public UpdateAccommodationAvailabilitiesRequestHandler(
             IUnitOfWork unitOfWork,
             IAccommodationRepository accommodationRepository,
             IStringManager stringManager,
-            CurrentUserContext currentUserContext
-        ) : base(unitOfWork, accommodationRepository, stringManager, currentUserContext) { }
-
-        protected override Task<bool> AdditionalValidations(UpdateAccommodationAvailabilitiesRequest request, CancellationToken ct)
+            CurrentUserContext currentUserContext,
+            IBookingServiceClient bookingServiceClient
+        ) : base(unitOfWork, accommodationRepository, stringManager, currentUserContext)
         {
-            // TODO check existing reservations
-            return base.AdditionalValidations(request, ct);
+            _bookingServiceClient = bookingServiceClient;
+        }
+
+        protected override async Task<bool> AdditionalValidations(UpdateAccommodationAvailabilitiesRequest request, CancellationToken ct)
+        {
+            var reservations = await _bookingServiceClient.GetOccupancies(request.Id, DateTime.Now, DateTime.MaxValue);
+            var bookingEnd = DateTime.Now.AddMonths(request.BookingAdvancePeriod);
+
+            foreach (var reservation in reservations)
+                for (var date = reservation.DatePeriod.DateFrom; date < reservation.DatePeriod.DateTo; date = date.AddDays(1))
+                    if (!date.IsAvailable(request.BookingAdvancePeriod, bookingEnd, request.Availabilities.Select(a =>
+                        new Availability { IsAvailable = a.IsAvailable, FromDate = a.FromDate, ToDate = a.ToDate }).ToList()))
+                        throw new BadLogicException("");
+            return true;
         }
 
         protected override async Task<Accommodation> UpdateAccommodation(UpdateAccommodationAvailabilitiesRequest accommodationUpdate, CancellationToken ct)
@@ -106,17 +119,34 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
 
     public class UpdateAccommodationPricingRequestHandler : PartialAccommodationUpdateRequestHandler<UpdateAccommodationPricingRequest>
     {
+        protected readonly IBookingServiceClient _bookingServiceClient;
+
         public UpdateAccommodationPricingRequestHandler(
             IUnitOfWork unitOfWork,
             IAccommodationRepository accommodationRepository,
             IStringManager stringManager,
-            CurrentUserContext currentUserContext
-        ) : base(unitOfWork, accommodationRepository, stringManager, currentUserContext) { }
-
-        protected override Task<bool> AdditionalValidations(UpdateAccommodationPricingRequest request, CancellationToken ct)
+            CurrentUserContext currentUserContext,
+            IBookingServiceClient bookingServiceClient
+        ) : base(unitOfWork, accommodationRepository, stringManager, currentUserContext)
         {
-            // TODO check existing reservations
-            return Task.FromResult(true);
+            _bookingServiceClient = bookingServiceClient;
+        }
+
+        protected override async Task<bool> AdditionalValidations(UpdateAccommodationPricingRequest request, CancellationToken ct)
+        {
+            var reservations = await _bookingServiceClient.GetOccupancies(request.Id, DateTime.Now, DateTime.MaxValue);
+            var priceDiffData = request.PriceDiffs.Select(pd => new ParsedPriceDiff(pd.When, pd.Percentage)).ToList();
+
+            foreach (var reservation in reservations)
+            {
+                var totalPrice = 0m;
+                for (var date = reservation.DatePeriod.DateFrom; date < reservation.DatePeriod.DateTo; date = date.AddDays(1))
+                    totalPrice += date.CalculatePrice(request.IsPerGuest, reservation.Guests, request.Price, priceDiffData).price;
+
+                if (totalPrice != reservation.Price)
+                    throw new BadLogicException("");
+            }
+            return true;
         }
 
         protected override async Task<Accommodation> UpdateAccommodation(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct)

@@ -1,6 +1,5 @@
 ﻿using ftrip.io.catalog_service.Accommodations.Domain;
 using ftrip.io.catalog_service.contracts.Accommodations;
-using ftrip.io.catalog_service.Utilities;
 using ftrip.io.framework.ExceptionHandling.Exceptions;
 using ftrip.io.framework.Globalization;
 using MediatR;
@@ -56,24 +55,15 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CalculatePrice
                 return priceInfo;
             }
 
-            var priceDiffData = accommodation.PriceDiffs.Select(pd => new
-            {
-                numbers = CronUtils.ParseCronExpression(pd.When),
-                percentage = pd.Percentage
-            }).ToList();
+            var priceDiffData = accommodation.PriceDiffs.Select(pd => new ParsedPriceDiff(pd.When, pd.Percentage)).ToList();
 
-            var date = request.CheckInDate;
-            while (date < request.CheckOutDate)
+            for (var date = request.CheckInDate; date < request.CheckOutDate; date = date.AddDays(1))
             {
-                var price = accommodation.IsPerGuest ? request.Guests * accommodation.Price : accommodation.Price;
-                var priceDiffPercent = priceDiffData
-                    .Where(d => CronUtils.Matches(date, d.numbers.monthDays, d.numbers.months, d.numbers.weekDays))
-                    .Select(d => d.percentage).Sum();
-                price += (decimal)priceDiffPercent / 100 * price;
+                (decimal price, float priceDiffPercent)
+                    = date.CalculatePrice(accommodation.IsPerGuest, request.Guests, accommodation.Price, priceDiffData);
                 priceInfo.Items.Add(new Item { Date = date, Price = price, PriceDiffPercent = priceDiffPercent });
                 priceInfo.Days++;
                 priceInfo.TotalPrice += price;
-                date = date.AddDays(1);
             }
 
             return priceInfo;
@@ -82,19 +72,10 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CalculatePrice
         private bool CheckAvailability(DateTime checkInDate, DateTime checkOutDate, Accommodation accommodation)
         {
             var bookingEnd = DateTime.Now.AddMonths(accommodation.BookingAdvancePeriod);
-            var date = checkInDate;
-            bool available = true;
-
-            while (date < checkOutDate && available)
-            {
-                if (accommodation.BookingAdvancePeriod >= 0 && (accommodation.BookingAdvancePeriod == 0 || date < bookingEnd))
-                    available = !accommodation.Availabilities.Any((a) => !a.IsAvailable && a.FromDate <= date && a.ToDate >= date);
-                else
-                    available = accommodation.Availabilities.Any((a) => a.IsAvailable && a.FromDate <= date && a.ToDate >= date);
-                date = date.AddDays(1);
-            }
-
-            return available;
+            for (var date = checkInDate; date < checkOutDate; date = date.AddDays(1))
+                if (!date.IsAvailable(accommodation.BookingAdvancePeriod, bookingEnd, accommodation.Availabilities))
+                    return false;
+            return true;
         }
     }
 }
