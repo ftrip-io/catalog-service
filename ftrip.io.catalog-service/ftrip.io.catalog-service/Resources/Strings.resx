@@ -135,6 +135,15 @@
   <data name="Common_Validation_FieldMustContainAlphaNumChars" xml:space="preserve">
     <value>{0} can only contain alpha numerical characters.</value>
   </data>
+  <data name="Existing_reservation_availability" xml:space="preserve">
+    <value>Cannot update accommodation availabilities because of some existing reservations.</value>
+  </data>
+  <data name="Existing_reservation_price" xml:space="preserve">
+    <value>Cannot update accommodation pricing because it would change the price of some existing reservations.</value>
+  </data>
+  <data name="Only_the_host" xml:space="preserve">
+    <value>Only the host can modify the accommodation.</value>
+  </data>
   <data name="Validation_CheckIn_WindowLengthAtLeast" xml:space="preserve">
     <value>The check-in window should be at least {0} hours.</value>
   </data>
