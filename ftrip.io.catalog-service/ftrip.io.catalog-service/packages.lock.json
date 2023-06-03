@@ -81,15 +81,6 @@
           "Microsoft.EntityFrameworkCore.Design": "3.1.32"
         }
       },
-      "System.Net.Http.Json": {
-        "type": "Direct",
-        "requested": "[3.2.0, )",
-        "resolved": "3.2.0",
-        "contentHash": "6VUCQKGS9A0RGkIIfLpvAbBOQdTgsffQJ0OOanEMuCC/couJtjRhK65/3kE97IYi6z5kvXYvQW4buZ2rH5zsDA==",
-        "dependencies": {
-          "System.Text.Json": "4.7.1"
-        }
-      },
       "AspNetCore.HealthChecks.MongoDb": {
         "type": "Transitive",
         "resolved": "3.1.3",

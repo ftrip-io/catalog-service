@@ -12,6 +12,7 @@ using ftrip.io.framework.Globalization;
 using ftrip.io.framework.messaging.Publisher;
 using ftrip.io.framework.Persistence.Contracts;
 using Moq;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
         private readonly Mock<IPropertyTypeRepository> _propertyTypeRepositoryMock = new Mock<IPropertyTypeRepository>();
         private readonly Mock<IStringManager> _stringManagerMock = new Mock<IStringManager>();
         private readonly Mock<IMessagePublisher> _messagePublisher = new Mock<IMessagePublisher>();
+        private readonly Mock<ILogger> _logger = new Mock<ILogger>();
 
         private readonly CreateAccommodationRequestHandler _handler;
 
@@ -48,7 +50,8 @@ namespace ftrip.io.catalog_service.unit_tests.Accommodations
                 _propertyTypeRepositoryMock.Object,
                 mapper,
                 _stringManagerMock.Object,
-                _messagePublisher.Object
+                _messagePublisher.Object,
+                _logger.Object
             );
         }
 

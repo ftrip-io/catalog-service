@@ -89,9 +89,9 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation
             var amenities = (await _amenityRepository.ReadByIds(request.Amenities.Select(a => a.AmenityId), ct)).ToList();
             if (amenities.Count < request.Amenities.Count)
             {
-                var notFoundIds = string.Join(", ", request.Amenities.Where(aa => !amenities.Any(a => a.Id == aa.AmenityId)).Select(aa => aa.AmenityId));
-                _logger.Error("Cannot update accommodation because some amenities are not found - AmenityIds[[{ids}]]", notFoundIds);
-                throw new MissingEntityException(_stringManager.Format("Common_MissingEntity", notFoundIds));
+                var notFoundIds = request.Amenities.Where(aa => !amenities.Exists(a => a.Id == aa.AmenityId)).Select(aa => aa.AmenityId).ToArray();
+                _logger.Error("Cannot update accommodation because some amenities are not found - AmenityIds[{ids}]", notFoundIds);
+                throw new MissingEntityException(_stringManager.Format("Common_MissingEntities", string.Join(", ", notFoundIds)));
             }
             return true;
         }

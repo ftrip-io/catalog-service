@@ -120,6 +120,9 @@
   <data name="Availability_Intervals_No_Overlap" xml:space="preserve">
     <value>The availability intervals should not overlap.</value>
   </data>
+  <data name="Common_MissingEntities" xml:space="preserve">
+    <value>Entities with given ids: [{0}] do not exist in the system.</value>
+  </data>
   <data name="Common_MissingEntity" xml:space="preserve">
     <value>Entity with given id: {0} does not exist in the system.</value>
   </data>

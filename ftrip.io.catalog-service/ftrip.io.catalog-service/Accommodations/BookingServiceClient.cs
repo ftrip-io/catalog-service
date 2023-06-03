@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ftrip.io.catalog_service.Accommodations
@@ -23,11 +23,12 @@ namespace ftrip.io.catalog_service.Accommodations
 
         public async Task<IEnumerable<AccommodationOccupancy>> GetOccupancies(Guid accommodationId, DateTime periodFrom, DateTime periodTo)
         {
-            return await _httpClient.GetFromJsonAsync<List<AccommodationOccupancy>>(
+            var responseStr = await _httpClient.GetStringAsync(
                 $"api/accommodation-occupancy?" +
                 $"AccommodationId={accommodationId}&PeriodFrom={periodFrom:yyyy-MM-dd}&PeriodTo={periodTo:yyyy-MM-dd}"
             );
-        }
 
+            return JsonSerializer.Deserialize<IEnumerable<AccommodationOccupancy>>(responseStr);
+        }
     }
 }
