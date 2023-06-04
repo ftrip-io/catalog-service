@@ -22,7 +22,7 @@ namespace ftrip.io.catalog_service.Installers
             _services.AddProxiedScoped<IAmenityRepository, AmenityRepository>();
             _services.AddProxiedScoped<IAmenityTypeRepository, AmenityTypeRepository>();
             _services.AddProxiedScoped<IPropertyTypeRepository, PropertyTypeRepository>();
-            _services.AddProxiedScoped<IBookingServiceClient, BookingServiceClient>();
+            _services.AddScoped<IBookingServiceClient, BookingServiceClient>();
         }
     }
 }
