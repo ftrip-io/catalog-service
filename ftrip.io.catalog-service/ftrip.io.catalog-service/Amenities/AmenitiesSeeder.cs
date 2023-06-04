@@ -52,7 +52,7 @@ namespace ftrip.io.catalog_service.Amenities
 
             amenities.ForEach(a =>
             {
-                var amenityType = amenityTypes.FirstOrDefault(at => at.Name == a.Type.Name);
+                var amenityType = amenityTypes.Find(at => at.Name == a.Type.Name);
                 if (amenityType != null) a.AmenityTypeId = amenityType.Id;
                 a.Type = null;
             });
