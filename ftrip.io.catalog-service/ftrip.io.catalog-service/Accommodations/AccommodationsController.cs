@@ -2,6 +2,7 @@
 using ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.DeleteAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.ReadById;
+using ftrip.io.catalog_service.Accommodations.UseCases.ReadByIds;
 using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
 using ftrip.io.framework.Contexts;
 using MediatR;
@@ -32,6 +33,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(new ReadByIdQuery { Id = id, Simple = simple }, ct));
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccommodationRequest request, CancellationToken ct = default)
         {
@@ -39,6 +41,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(request, ct));
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateAccommodationRequest request, CancellationToken ct = default)
         {
@@ -46,6 +49,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(request, ct));
         }
 
+        [Authorize]
         [HttpPut("{id}/amenities")]
         public async Task<IActionResult> Update(Guid id, UpdateAccommodationAmenitiesRequest request, CancellationToken ct = default)
         {
@@ -53,6 +57,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(request, ct));
         }
 
+        [Authorize]
         [HttpPut("{id}/availabilities")]
         public async Task<IActionResult> Update(Guid id, UpdateAccommodationAvailabilitiesRequest request, CancellationToken ct = default)
         {
@@ -60,6 +65,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(request, ct));
         }
 
+        [Authorize]
         [HttpPut("{id}/location")]
         public async Task<IActionResult> Update(Guid id, UpdateAccommodationLocationRequest request, CancellationToken ct = default)
         {
@@ -67,6 +73,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok(await _mediator.Send(request, ct));
         }
 
+        [Authorize]
         [HttpPut("{id}/pricing")]
         public async Task<IActionResult> Update(Guid id, UpdateAccommodationPricingRequest request, CancellationToken ct = default)
         {
@@ -83,6 +90,7 @@ namespace ftrip.io.catalog_service.Accommodations
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
         {
@@ -99,6 +107,12 @@ namespace ftrip.io.catalog_service.Accommodations
                 CheckOutDate = checkOut,
                 Guests = guests,
             }, ct));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReadByIds([FromQuery] Guid[] ids, CancellationToken ct = default)
+        {
+            return Ok(await _mediator.Send(new ReadByIdsQuery() { Ids = ids }, ct));
         }
     }
 }
