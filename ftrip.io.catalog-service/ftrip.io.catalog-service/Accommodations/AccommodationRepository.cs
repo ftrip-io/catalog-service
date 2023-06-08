@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ftrip.io.catalog_service.Accommodations
 {
@@ -18,6 +19,7 @@ namespace ftrip.io.catalog_service.Accommodations
         Task<Accommodation> Update(UpdateAccommodationAvailabilitiesRequest accommodationUpdate, CancellationToken ct = default);
         Task<Accommodation> Update(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct = default);
         Task<Accommodation> ReadSimple(Guid id, CancellationToken ct = default);
+        Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken cancellationToken);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -147,6 +149,14 @@ namespace ftrip.io.catalog_service.Accommodations
             _context.RemoveRange(accommodation.Availabilities);
             _context.RemoveRange(accommodation.PriceDiffs);
             return accommodation;
+        }
+
+        public async Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken cancellationToken = default)
+        {
+            return await _entities
+                .Where(accommodation => ids.Contains(accommodation.Id))
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
     }
 }
