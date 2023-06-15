@@ -1,4 +1,5 @@
-﻿using ftrip.io.catalog_service.Accommodations.Domain;
+﻿using Amazon.Runtime.Internal.Util;
+using ftrip.io.catalog_service.Accommodations.Domain;
 using ftrip.io.catalog_service.contracts.Accommodations;
 using ftrip.io.framework.ExceptionHandling.Exceptions;
 using ftrip.io.framework.Globalization;
@@ -23,9 +24,11 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CalculatePrice
 
         public async Task<PriceInfo> Handle(CalculatePriceQuery request, CancellationToken cancellationToken)
         {
-            var accommodation = await _accommodationRepository.Read(request.AccommodationId);
+            var accommodation = request.Accommodation ?? await _accommodationRepository.Read(request.AccommodationId);
             if (accommodation == null)
+            {
                 throw new MissingEntityException(_stringManager.Format("Common_MissingEntity", request.AccommodationId));
+            }
 
             var priceInfo = new PriceInfo
             {

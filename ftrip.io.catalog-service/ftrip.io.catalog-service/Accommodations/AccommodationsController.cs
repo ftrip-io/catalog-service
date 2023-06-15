@@ -3,6 +3,7 @@ using ftrip.io.catalog_service.Accommodations.UseCases.CreateAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.DeleteAccommodation;
 using ftrip.io.catalog_service.Accommodations.UseCases.ReadById;
 using ftrip.io.catalog_service.Accommodations.UseCases.ReadByIds;
+using ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations;
 using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
 using ftrip.io.framework.Contexts;
 using MediatR;
@@ -113,6 +114,12 @@ namespace ftrip.io.catalog_service.Accommodations
         public async Task<IActionResult> ReadByIds([FromQuery] Guid[] ids, CancellationToken ct = default)
         {
             return Ok(await _mediator.Send(new ReadByIdsQuery() { Ids = ids }, ct));
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] SearchAccommodationQuery query, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(query, cancellationToken));
         }
     }
 }
