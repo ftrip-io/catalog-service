@@ -8,6 +8,7 @@ using System.Threading;
 using ftrip.io.catalog_service.Accommodations.UseCases.UpdateAccommodation;
 using System.Linq;
 using System.Collections.Generic;
+using ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations;
 
 namespace ftrip.io.catalog_service.Accommodations
 {
@@ -20,6 +21,7 @@ namespace ftrip.io.catalog_service.Accommodations
         Task<Accommodation> Update(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct = default);
         Task<Accommodation> ReadSimple(Guid id, CancellationToken ct = default);
         Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken cancellationToken);
+        Task<IEnumerable<Accommodation>> ReadByQuery(SearchAccommodationQuery query, CancellationToken cancellationToken = default);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -157,6 +159,20 @@ namespace ftrip.io.catalog_service.Accommodations
                 .Where(accommodation => ids.Contains(accommodation.Id))
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
+        }
+
+        async Task<IEnumerable<Accommodation>> IAccommodationRepository.ReadByQuery(SearchAccommodationQuery query, CancellationToken cancellationToken)
+        {
+            return await _entities
+                 .AsNoTracking()
+                 .Include(a => a.Location)
+                 .Include(a => a.Availabilities)
+                 .Include(a => a.PriceDiffs)
+                 .Where(a => a.Location.Country.ToLower().Contains(query.Location.ToLower()) ||
+                             a.Location.Region.ToLower().Contains(query.Location.ToLower()) ||
+                             a.Location.City.ToLower().Contains(query.Location.ToLower()))
+                 .Where(a => !query.GuestNum.HasValue || (a.MinGuests < query.GuestNum && a.MaxGuests > query.GuestNum))
+                 .ToListAsync(cancellationToken);
         }
     }
 }
