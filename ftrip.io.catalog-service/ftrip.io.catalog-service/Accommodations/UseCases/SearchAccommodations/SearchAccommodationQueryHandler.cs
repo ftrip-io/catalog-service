@@ -5,7 +5,6 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,18 +34,14 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations
                 return Enumerable.Empty<AccommodationSearchInfo>();
             }
 
-            var availableAccommodations = await AvailableAccommodations(matchedAccommodations, request);
+            var areDatesProvided = request.FromDate.HasValue && request.ToDate.HasValue;
+            var availableAccommodations = areDatesProvided
+                ? await AvailableAccommodations(matchedAccommodations, request, cancellationToken)
+                : matchedAccommodations;
+            var prices = await Task.WhenAll(areDatesProvided
+                ? availableAccommodations.Select(a => GetPriceInfo(matchedAccommodations.First(ma => ma.Id == a.Id), request.FromDate, request.ToDate, request.GuestNum.Value, cancellationToken))
+                : Enumerable.Empty<Task<PriceInfo>>());
 
-            var prices = await Task.WhenAll(
-                availableAccommodations.Select(a => GetPriceInfo(matchedAccommodations.First(ma => ma.Id == a.Id), request.FromDate, request.ToDate, request.GuestNum.Value, cancellationToken))
-            );
-            foreach(var x in prices)
-            {
-                foreach(var y in x.Problems)
-                {
-                    Console.WriteLine(y);
-                }
-            }
             return availableAccommodations.Select(a => new AccommodationSearchInfo
             {
                 AccommodationId = a.Id,
@@ -59,28 +54,19 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations
                 Location = a.Location,
                 Price = a.Price,
                 IsPerGuest = a.IsPerGuest,
-                TotalPrice = prices.First(p => p.AccommodationId == a.Id).TotalPrice
-            }).Where(si => !prices.First(p => p.AccommodationId == si.AccommodationId).Problems.Any());
+                TotalPrice = prices.FirstOrDefault(p => p.AccommodationId == a.Id)?.TotalPrice ?? null
+            }).Where(si => !prices.FirstOrDefault(p => p.AccommodationId == si.AccommodationId)?.Problems.Any() ?? true);
         }
 
-        private async Task<IEnumerable<Accommodation>> AvailableAccommodations(IEnumerable<Accommodation> matchedAccommodations,SearchAccommodationQuery request) 
+        private async Task<IEnumerable<Accommodation>> AvailableAccommodations(IEnumerable<Accommodation> matchedAccommodations, SearchAccommodationQuery request, CancellationToken cancellationToken) 
         {
-            if (request.FromDate.HasValue && request.ToDate.HasValue)
-            {
-                var availableAccommodationIds = await _bookingServiceClient.CheckAvailability(matchedAccommodations.Select(a => a.Id).ToList(), request.FromDate.Value, request.ToDate.Value);
+            var availableAccommodationIds = await _bookingServiceClient.CheckAvailability(matchedAccommodations.Select(a => a.Id).ToList(), request.FromDate.Value, request.ToDate.Value, cancellationToken);
 
-                return matchedAccommodations.Where(a => availableAccommodationIds.Contains(a.Id));
-            }
-
-            return matchedAccommodations;
+            return matchedAccommodations.Where(a => availableAccommodationIds.Contains(a.Id));
         }
 
         private async Task<PriceInfo> GetPriceInfo(Accommodation accommodation, DateTime? checkInDate, DateTime? checkOutDate, int guestNumber, CancellationToken cancellationToken)
         {
-            if (!checkInDate.HasValue || !checkOutDate.HasValue) {
-                return null;
-            }
-
             return await _mediator.Send(new CalculatePriceQuery()
             {
                 AccommodationId = accommodation.Id,

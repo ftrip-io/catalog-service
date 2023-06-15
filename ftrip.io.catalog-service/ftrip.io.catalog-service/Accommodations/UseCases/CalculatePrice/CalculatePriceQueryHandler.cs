@@ -49,7 +49,6 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.CalculatePrice
                 priceInfo.Problems.Add($"Too few guests. Min guests is {accommodation.MinGuests}");
             if (request.Guests > accommodation.MaxGuests)
                 priceInfo.Problems.Add($"Too many guests. Max guests is {accommodation.MaxGuests}");
-            Console.WriteLine(string.Join(";", priceInfo.Problems));
             if (priceInfo.Problems.Any())
                 return priceInfo;
 

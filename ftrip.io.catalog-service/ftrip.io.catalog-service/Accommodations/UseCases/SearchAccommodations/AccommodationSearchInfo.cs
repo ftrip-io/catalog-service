@@ -13,7 +13,7 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations
         public int BedCount { get; set; }
         public int BathroomCount { get; set; }
         public Location Location { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
         public decimal Price { get; set; }
         public bool IsPerGuest { get; set; }
     }
