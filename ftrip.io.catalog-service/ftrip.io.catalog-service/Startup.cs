@@ -22,6 +22,7 @@ using ftrip.io.framework.Tracing;
 using ftrip.io.framework.Correlation;
 using Serilog;
 using ftrip.io.framework.Proxies;
+using ftrip.io.framework.Metrics;
 
 namespace ftrip.io.catalog_service
 {
@@ -60,7 +61,8 @@ namespace ftrip.io.catalog_service
                     tracingSettings.MachineName = Environment.MachineName;
                 }),
                 new CorrelationInstaller(services),
-                new ProxyGeneratorInstaller(services)
+                new ProxyGeneratorInstaller(services),
+                new MetricsInstaller(services)
             ).Install();
         }
 
@@ -74,6 +76,8 @@ namespace ftrip.io.catalog_service
             app.UseSerilogRequestLogging();
 
             app.UseRouting();
+
+            app.UseMetrics();
 
             app.UseCors(policy => policy
                 .WithOrigins(Environment.GetEnvironmentVariable("API_PROXY_URL"))
