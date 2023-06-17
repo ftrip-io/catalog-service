@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="ftrip.io.framework" Version="2.6.1" />
-    <PackageReference Include="ftrip.io.framework.auth" Version="2.6.1" />
-    <PackageReference Include="ftrip.io.framework.messaging" Version="2.6.1" />
+    <PackageReference Include="ftrip.io.framework" Version="2.7.0" />
+    <PackageReference Include="ftrip.io.framework.auth" Version="2.7.0" />
+    <PackageReference Include="ftrip.io.framework.messaging" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,4 +48,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>
