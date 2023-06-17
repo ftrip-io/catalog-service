@@ -20,8 +20,9 @@ namespace ftrip.io.catalog_service.Accommodations
         Task<Accommodation> Update(UpdateAccommodationAvailabilitiesRequest accommodationUpdate, CancellationToken ct = default);
         Task<Accommodation> Update(UpdateAccommodationPricingRequest accommodationUpdate, CancellationToken ct = default);
         Task<Accommodation> ReadSimple(Guid id, CancellationToken ct = default);
-        Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken cancellationToken);
-        Task<IEnumerable<Accommodation>> ReadByQuery(SearchAccommodationQuery query, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken ct = default);
+        Task<IEnumerable<Accommodation>> ReadByQuery(SearchAccommodationQuery query, CancellationToken ct = default);
+        Task<IEnumerable<Accommodation>> ReadByHostId(Guid hostId, CancellationToken ct = default);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -153,15 +154,15 @@ namespace ftrip.io.catalog_service.Accommodations
             return accommodation;
         }
 
-        public async Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken ct = default)
         {
             return await _entities
                 .Where(accommodation => ids.Contains(accommodation.Id))
                 .AsNoTracking()
-                .ToListAsync(cancellationToken);
+                .ToListAsync(ct);
         }
 
-        async Task<IEnumerable<Accommodation>> IAccommodationRepository.ReadByQuery(SearchAccommodationQuery query, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Accommodation>> ReadByQuery(SearchAccommodationQuery query, CancellationToken ct = default)
         {
             return await _entities
                  .AsNoTracking()
@@ -171,8 +172,17 @@ namespace ftrip.io.catalog_service.Accommodations
                  .Where(a => a.Location.Country.ToLower().Contains(query.Location.ToLower()) ||
                              a.Location.Region.ToLower().Contains(query.Location.ToLower()) ||
                              a.Location.City.ToLower().Contains(query.Location.ToLower()))
-                 .Where(a => !query.GuestNum.HasValue || (a.MinGuests < query.GuestNum && a.MaxGuests > query.GuestNum))
-                 .ToListAsync(cancellationToken);
+                 .Where(a => !query.GuestNum.HasValue || (a.MinGuests <= query.GuestNum && a.MaxGuests >= query.GuestNum))
+                 .ToListAsync(ct);
+        }
+
+        public async Task<IEnumerable<Accommodation>> ReadByHostId(Guid hostId, CancellationToken ct = default)
+        {
+            return await _entities
+                .AsNoTracking()
+                .Include(a => a.Location)
+                .Where(a => a.HostId == hostId)
+                .ToListAsync(ct);
         }
     }
 }

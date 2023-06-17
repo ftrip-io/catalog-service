@@ -42,20 +42,22 @@ namespace ftrip.io.catalog_service.Accommodations.UseCases.SearchAccommodations
                 ? availableAccommodations.Select(a => GetPriceInfo(matchedAccommodations.First(ma => ma.Id == a.Id), request.FromDate, request.ToDate, request.GuestNum.Value, cancellationToken))
                 : Enumerable.Empty<Task<PriceInfo>>());
 
-            return availableAccommodations.Select(a => new AccommodationSearchInfo
-            {
-                AccommodationId = a.Id,
-                Title = a.Title,
-                Description = a.Description,
-                PlaceType = a.PlaceType,
-                BathroomCount = a.BathroomCount,
-                BedCount = a.BedCount,
-                BedroomCount = a.BedroomCount,
-                Location = a.Location,
-                Price = a.Price,
-                IsPerGuest = a.IsPerGuest,
-                TotalPrice = prices.FirstOrDefault(p => p.AccommodationId == a.Id)?.TotalPrice ?? null
-            }).Where(si => !prices.FirstOrDefault(p => p.AccommodationId == si.AccommodationId)?.Problems.Any() ?? true);
+            return availableAccommodations
+                .Where(a => !prices.FirstOrDefault(p => p.AccommodationId == a.Id)?.Problems.Any() ?? true)
+                .Select(a => new AccommodationSearchInfo
+                {
+                    AccommodationId = a.Id,
+                    Title = a.Title,
+                    Description = a.Description,
+                    PlaceType = a.PlaceType,
+                    BathroomCount = a.BathroomCount,
+                    BedCount = a.BedCount,
+                    BedroomCount = a.BedroomCount,
+                    Location = a.Location,
+                    Price = a.Price,
+                    IsPerGuest = a.IsPerGuest,
+                    TotalPrice = prices.FirstOrDefault(p => p.AccommodationId == a.Id)?.TotalPrice ?? null
+                });
         }
 
         private async Task<IEnumerable<Accommodation>> AvailableAccommodations(IEnumerable<Accommodation> matchedAccommodations, SearchAccommodationQuery request, CancellationToken cancellationToken) 

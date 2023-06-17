@@ -2,67 +2,6 @@
   "version": 1,
   "dependencies": {
     ".NETCoreApp,Version=v3.1": {
-      "ftrip.io.framework": {
-        "type": "Direct",
-        "requested": "[2.6.1, )",
-        "resolved": "2.6.1",
-        "contentHash": "4bQoVJEvPJ95Qz14Cjze8M2FKvHmzShlGEIgwkjNuOvGhm9O2JqOqXzLVWphu8ixaz76rJGAZlqOAba4CLIODQ==",
-        "dependencies": {
-          "AspNetCore.HealthChecks.MongoDb": "3.1.3",
-          "AspNetCore.HealthChecks.MySql": "3.1.1",
-          "AspNetCore.HealthChecks.UI": "3.1.3",
-          "AspNetCore.HealthChecks.UI.Client": "3.1.2",
-          "AspNetCore.HealthChecks.UI.InMemory.Storage": "3.1.2",
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.0",
-          "Castle.Core": "5.1.1",
-          "FluentValidation.AspNetCore": "11.3.0",
-          "MediatR": "11.1.0",
-          "MediatR.Extensions.Microsoft.DependencyInjection": "9.0.0",
-          "Microsoft.EntityFrameworkCore": "3.1.32",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.32",
-          "MongoDB.Driver": "2.19.1",
-          "MongoDB.Driver.Core.Extensions.OpenTelemetry": "1.0.0",
-          "OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore": "1.0.0-beta2",
-          "OpenTelemetry.Exporter.Jaeger": "1.4.0",
-          "OpenTelemetry.Extensions.Hosting": "1.4.0",
-          "OpenTelemetry.Instrumentation.AspNetCore": "1.0.0-rc9.14",
-          "OpenTelemetry.Instrumentation.Http": "1.0.0-rc9.14",
-          "OpenTelemetry.Instrumentation.MassTransit": "1.0.0-beta.3",
-          "Polly": "7.2.3",
-          "Pomelo.EntityFrameworkCore.MySql": "3.2.7",
-          "Pomelo.EntityFrameworkCore.MySql.Json.Newtonsoft": "3.2.7",
-          "Serilog": "2.12.0",
-          "Serilog.AspNetCore": "3.4.0",
-          "Serilog.Enrichers.ClientInfo": "1.2.0",
-          "Serilog.Sinks.Console": "4.1.0",
-          "Serilog.Sinks.Grafana.Loki": "8.1.0",
-          "Swashbuckle.AspNetCore": "6.5.0",
-          "Swashbuckle.AspNetCore.Filters": "7.0.6"
-        }
-      },
-      "ftrip.io.framework.auth": {
-        "type": "Direct",
-        "requested": "[2.6.1, )",
-        "resolved": "2.6.1",
-        "contentHash": "T6TVLmwRGxfVaaSDtPMBpJeDcghY1pfv2DeSu/kE/RPC/iyPlw+vtDngtL+Ak+5Tb5HtvN/QyTDfEwLLlGVI+A==",
-        "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.32",
-          "ftrip.io.framework": "2.6.1"
-        }
-      },
-      "ftrip.io.framework.messaging": {
-        "type": "Direct",
-        "requested": "[2.6.1, )",
-        "resolved": "2.6.1",
-        "contentHash": "AU3cMXD3i+Sljsqj4WXtj3jKy0dAXlCx+CuN4VFj5shUaJk5wpxBACP2FVPvlYNnT8DGOXESN0zFuvyR5T52WQ==",
-        "dependencies": {
-          "MassTransit": "7.3.1",
-          "MassTransit.AspNetCore": "7.3.1",
-          "MassTransit.Extensions.DependencyInjection": "7.3.1",
-          "MassTransit.RabbitMQ": "7.3.1",
-          "ftrip.io.framework": "2.6.1"
-        }
-      },
       "Microsoft.EntityFrameworkCore.Relational": {
         "type": "Direct",
         "requested": "[3.1.32, )",
@@ -1003,6 +942,19 @@
         "type": "Transitive",
         "resolved": "1.8.1.3",
         "contentHash": "1jUpszv0ETm+hl78HKnYgY3wPzt6qRtjxaPENNrGCuB8nondbR/j75WAKdd6sxXzOzBcX07WMZhZEYc4s5jVWg=="
+      },
+      "prometheus-net": {
+        "type": "Transitive",
+        "resolved": "3.5.0",
+        "contentHash": "8f9TyVpT8jy4Yp5GoHwj45t17l4fuJq3/sXXsuaX/iB5HmX9mZoVn2Bb6pGyCzImL+Z15KgBcJmRHlYEF5f98g=="
+      },
+      "prometheus-net.AspNetCore": {
+        "type": "Transitive",
+        "resolved": "3.5.0",
+        "contentHash": "OyNpmFHzENOqYbqZiaxlcGc17PFdCSr06S9eqm5HRUokNrL/51dty6qi+l7eb9uFismUPGw28aRivrA49Do+gA==",
+        "dependencies": {
+          "prometheus-net": "3.5.0"
+        }
       },
       "RabbitMQ.Client": {
         "type": "Transitive",
@@ -2179,6 +2131,59 @@
         "dependencies": {
           "ftrip.io.framework": "2.6.1",
           "ftrip.io.framework.messaging": "2.6.1"
+        }
+      },
+      "ftrip.io.framework": {
+        "type": "Project",
+        "dependencies": {
+          "AspNetCore.HealthChecks.MongoDb": "3.1.3",
+          "AspNetCore.HealthChecks.MySql": "3.1.1",
+          "AspNetCore.HealthChecks.UI": "3.1.3",
+          "AspNetCore.HealthChecks.UI.Client": "3.1.2",
+          "AspNetCore.HealthChecks.UI.InMemory.Storage": "3.1.2",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.0",
+          "Castle.Core": "5.1.1",
+          "FluentValidation.AspNetCore": "11.3.0",
+          "MediatR": "11.1.0",
+          "MediatR.Extensions.Microsoft.DependencyInjection": "9.0.0",
+          "Microsoft.EntityFrameworkCore": "3.1.32",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.32",
+          "MongoDB.Driver": "2.19.1",
+          "MongoDB.Driver.Core.Extensions.OpenTelemetry": "1.0.0",
+          "OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore": "1.0.0-beta2",
+          "OpenTelemetry.Exporter.Jaeger": "1.4.0",
+          "OpenTelemetry.Extensions.Hosting": "1.4.0",
+          "OpenTelemetry.Instrumentation.AspNetCore": "1.0.0-rc9.14",
+          "OpenTelemetry.Instrumentation.Http": "1.0.0-rc9.14",
+          "OpenTelemetry.Instrumentation.MassTransit": "1.0.0-beta.3",
+          "Polly": "7.2.3",
+          "Pomelo.EntityFrameworkCore.MySql": "3.2.7",
+          "Pomelo.EntityFrameworkCore.MySql.Json.Newtonsoft": "3.2.7",
+          "Serilog": "2.12.0",
+          "Serilog.AspNetCore": "3.4.0",
+          "Serilog.Enrichers.ClientInfo": "1.2.0",
+          "Serilog.Sinks.Console": "4.1.0",
+          "Serilog.Sinks.Grafana.Loki": "8.1.0",
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "Swashbuckle.AspNetCore.Filters": "7.0.6",
+          "prometheus-net.AspNetCore": "3.5.0"
+        }
+      },
+      "ftrip.io.framework.auth": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.32",
+          "ftrip.io.framework": "2.6.1"
+        }
+      },
+      "ftrip.io.framework.messaging": {
+        "type": "Project",
+        "dependencies": {
+          "MassTransit": "7.3.1",
+          "MassTransit.AspNetCore": "7.3.1",
+          "MassTransit.Extensions.DependencyInjection": "7.3.1",
+          "MassTransit.RabbitMQ": "7.3.1",
+          "ftrip.io.framework": "2.6.1"
         }
       }
     }
