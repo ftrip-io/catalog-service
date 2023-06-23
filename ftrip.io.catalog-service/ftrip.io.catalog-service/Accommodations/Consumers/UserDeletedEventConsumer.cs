@@ -19,9 +19,10 @@ namespace ftrip.io.catalog_service.Accommodations.Consumers
 
         public async Task Consume(ConsumeContext<UserDeletedEvent> context)
         {
-            var userId = context.Message.UserId;
+            var deletedUser = context.Message;
 
-            await _mediator.Send(new DeleteByHostIdRequest { HostId = Guid.Parse(userId) }, CancellationToken.None);
+            if (deletedUser.UserType == "Host")
+                await _mediator.Send(new DeleteByHostIdRequest { HostId = Guid.Parse(deletedUser.UserId) }, CancellationToken.None);
         }
 
     }
