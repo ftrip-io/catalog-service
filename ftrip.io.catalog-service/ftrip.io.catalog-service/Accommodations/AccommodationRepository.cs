@@ -23,6 +23,7 @@ namespace ftrip.io.catalog_service.Accommodations
         Task<IEnumerable<Accommodation>> ReadByIds(Guid[] ids, CancellationToken ct = default);
         Task<IEnumerable<Accommodation>> ReadByQuery(SearchAccommodationQuery query, CancellationToken ct = default);
         Task<IEnumerable<Accommodation>> ReadByHostId(Guid hostId, CancellationToken ct = default);
+        Task<IEnumerable<Accommodation>> DeleteByHostId(Guid hostId, CancellationToken ct = default);
     }
 
     public class AccommodationRepository : Repository<Accommodation, Guid>, IAccommodationRepository
@@ -146,11 +147,7 @@ namespace ftrip.io.catalog_service.Accommodations
         {
             var accommodation = await Read(id, cancellationToken);
             if (accommodation == null) return accommodation;
-            _entities.Remove(accommodation);
-            _context.Remove(accommodation.Location);
-            _context.RemoveRange(accommodation.Amenities);
-            _context.RemoveRange(accommodation.Availabilities);
-            _context.RemoveRange(accommodation.PriceDiffs);
+            RemoveFromContext(accommodation);
             return accommodation;
         }
 
@@ -183,6 +180,28 @@ namespace ftrip.io.catalog_service.Accommodations
                 .Include(a => a.Location)
                 .Where(a => a.HostId == hostId)
                 .ToListAsync(ct);
+        }
+
+        public async Task<IEnumerable<Accommodation>> DeleteByHostId(Guid hostId, CancellationToken ct = default)
+        {
+            var accommodations = await _entities
+                .Include(a => a.Location)
+                .Include(a => a.Amenities)
+                .Include(a => a.Availabilities)
+                .Include(a => a.PriceDiffs)
+                .Where(a => a.HostId == hostId)
+                .ToListAsync(ct);
+            foreach (var accommodation in accommodations) RemoveFromContext(accommodation);
+            return accommodations;
+        }
+
+        private void RemoveFromContext(Accommodation accommodation)
+        {
+            _entities.Remove(accommodation);
+            _context.Remove(accommodation.Location);
+            _context.RemoveRange(accommodation.Amenities);
+            _context.RemoveRange(accommodation.Availabilities);
+            _context.RemoveRange(accommodation.PriceDiffs);
         }
     }
 }
