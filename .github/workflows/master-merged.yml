@@ -16,7 +16,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Kaniko build
-        uses: aevea/action-kaniko@master
+        uses: aevea/action-kaniko@v0.10.0
         with:
           image: ftripio/catalog-service
           path: ftrip.io.catalog-service
