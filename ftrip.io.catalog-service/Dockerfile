@@ -21,7 +21,7 @@ WORKDIR /app
 
 RUN addgroup --system ftrip-io && adduser --system catalog-service
 
-COPY --from=build --chown=catalog-service:ftrip-io --chmod=777 /build/out .
+COPY --from=build --chown=catalog-service:ftrip-io --chmod=500 /build/out .
 
 EXPOSE 80
 
