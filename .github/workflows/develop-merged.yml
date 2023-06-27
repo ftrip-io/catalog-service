@@ -10,9 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: ftrip-io/github-ci/build-and-push-to-dockerhub@ef2fd6ac85fe9e0ae63e5979a82a35bd5075bc33
+      - name: Kaniko build
+        uses: aevea/action-kaniko@v0.10.0
         with:
+          image: ftripio/catalog-service-dev
+          path: ftrip.io.catalog-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-          context: "ftrip.io.catalog-service"
-          tags: ftripio/catalog-service-dev:latest
+          cache: true
+          cache_registry: ftripio/catalog-service-cache
