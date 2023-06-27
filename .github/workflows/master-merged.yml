@@ -19,6 +19,7 @@ jobs:
         uses: aevea/action-kaniko@master
         with:
           image: ftripio/catalog-service
+          path: ftrip.io.catalog-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
           tag: ${{ steps.semantic-release.outputs.next-version }}
