@@ -19,10 +19,9 @@ RUN dotnet publish -c $CONFIGURATION -o out ftrip.io.catalog-service/ftrip.io.ca
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS final
 WORKDIR /app
 
-RUN addgroup --system ftrip-io
-RUN adduser --system catalog-service
+RUN addgroup --system ftrip-io && adduser --system catalog-service
 
-COPY --from=build --chown=catalog-service:ftrip-io --chmod=500 /build/out .
+COPY --from=build --chown=catalog-service:ftrip-io --chmod=777 /build/out .
 
 EXPOSE 80
 
